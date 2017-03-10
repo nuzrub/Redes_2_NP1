@@ -1,0 +1,70 @@
+
+
+Recursos:
+	Básico
+	Interface cliente e servidor
+	Sistema de status
+	Comunicação binária.
+		= 6 + 1 + 0.5 + 2 + 2 = 11.5 pts (1.5 de folga).
+
+
+Eu devo possuir alguma forma de status do cliente:
+	Nome, Status, Ip, ID
+		Não é necessário saber a sala que ele tá, pois não vão ter múltiplas salas
+		Nome (ou nick) é importante
+		Status é pro extra
+		Ip é pra interface servidor
+		ID é pra poder identificar o cliente sem precisar duma string
+
+	// Conexão
+	O cliente se conecta ao servidor e envia:
+		Seu nome
+		Seu status
+		O ip eu já tenho pela conexão.
+	O servidor responde:
+		Clientes na mesma sala (nome-id)
+		ID do cliente
+	Entra em modo standby
+		Fica esperando por mensagens e novos clientes
+
+	// Envio de Mensagem
+	O sistema de envio de mensagem é o mesmo pra cliente/servidor
+	e para pm/pública. Tendo o ID do remetente e do destinatário, 
+	é possível saber se é uma PM ou uma pública.
+		O cliente envia uma mensagem. Em outras palavras, ele envia:
+			Que é uma mensagem
+			De quem ela é (ID)
+			Pra quem (ID, 0 para público)
+			O tamanho da mensagem
+			A mensagem em si.
+		O servidor recebe.
+			Envia pros envolvidos (pro destinatário ou pra todos)
+			Que é uma mensagem
+			De quem ela é (ID)
+			Para quem (ID, 0 para público)
+			O tamanho da mensagem
+			A mensagem em si.
+
+	// Troca de estado
+	Funciona da mesma forma que enviar uma mensagem
+	Mas envia o estado ao invés da string.
+
+	// Desconectar e Kick
+	O desconectar e o kickar são implementados iguais.
+	Na prática, o desconectar é o cliente pedindo pra ser kickado.
+	Na interface, o que muda é a mensagem.
+		O cliente envia uma mensagem
+			Que é de desconectar
+			Quem ele é (ID)
+		O Servidor kicka o cliente:
+			Envia uma mensagem de kick pra todos
+			Quem foi kickado (ID)
+			O servidor desconecta o cliente.
+		Ao receber uma mensagem de kick:
+			Apagar a janela de PM com esse cara
+			Tirar ele da lista
+		
+
+		
+	
+

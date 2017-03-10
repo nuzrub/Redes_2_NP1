@@ -1,0 +1,97 @@
+
+
+
+Este documento especifica o trabalho da disciplina de N595 - Redes de
+Computadores II, que será um aplicativo de chat a ser desenvolvido utilizando se
+sockets. O aluno poderá utilizar qualquer linguagem de programação na qual
+possa utilizar a API de sockets.
+
+O aluno deverá construir uma aplicação de chat utilizando a API de sockets
+seguindo a arquitetura cliente servidor. A aplicação servidora deverá suportar
+vários clientes simultaneamente. A Figura 1 ilustra a arquitetura desejada. Logo
+o servidor deverá implementar um esquema multi-threads para suportar
+múltiplos clientes simultâneos.
+
+A aplicação de chat a ser desenvolvida funcionará com o conceitos de
+salas de bate papo (e.g. Chat Uol, IRC, etc). Então um usuário recém logado irá
+para uma sala comum a todos os usuários e nessa sala poderá interagir com
+todos os outros usuários logados ou enviar mensagens em particular para um
+determinado usuário.A aplicação de chat deve, no mínimo, possuir os seguintes recursos
+disponíveis aos usuários:
+		Uma sala de bate papo geral, onde todos os usuários logados
+	podem trocar mensagens entre si;
+		Permitir o usuário visualizar os nomes de usuários participantes do
+	chat;
+		Permitir o envio de mensagens para um usuário específico
+	(mensagem privada);
+
+O aluno que desenvolver esse conjunto mínimo de funcionalidades terá
+uma nota igual a seis no trabalho (obviamente se tudo funcionar corretamente,
+caso contrário a nota sofrerá descontos, dependendo da sua gravidade, por cada
+erro encontrado).
+
+A seguir será listada algumas funcionalidades opcionais que tem como
+intuito incrementar a aplicação de chat. Cada funcionalidade tem consigo uma
+pontuação relacionada que será somada a nota base do trabalho. As
+funcionalidades opcionais são:
+		Criar uma interface gráfica para a aplicação cliente. A interface
+	deve mostrar uma área para que o usuário possa escrever uma
+	mensagem, visualizar os outros usuários que estão no chat e poder
+	enviar mensagem provadas a um usuário específico (1 ponto);
+		Criar uma interface gráfica para a aplicação servidora. A interface
+	deve mostrar todos os usuários logados no sistema, seus
+	respectivos endereços Ips e permitir a retirada de um usuário do
+	chat (0,5 ponto);
+		Utilizar o formato XML ou JSON no protocolo de comunicação
+	entre cliente e servidor (0,5 pontos);
+		Utilizar o formato binário no protocolo de comunicação entre
+	cliente e servidor (2 pontos);
+		Permitir que o usuário possa criar uma nova sala de bate papo
+	pública, tornando-se o administrador dela onde possa retirar uma
+	pessoa da mesma. (2 pontos);
+		Permitir que usuários ingressem em mais de uma sala de bate papo
+	pública (1 pontos);
+		Permitir que o usuário possa criar uma nova sala de bate papo
+	privada, tornando-se o administrador dela onde possa convidar
+	outros usuários para a sala e retirar uma pessoa da mesma. (3
+	pontos);
+		Exibir na sala de bate papo um ícone de status do usuário, onde a
+	cor verde significa disponível, amarelo significa ocupado e
+	vermelho significa ausente (2 pontos);
+
+
+
+A data de entrega do trabalho será dia 27/03, mesma data da nossa NP1.
+O trabalho pode ser feito individualmente ou em duplas de dois. 
+	A entrega deve ser efetua via Unifor Online via documento contendo:
+		O nome do(s) integrante(s);
+		Linguagem de programação utilizada;
+		Instruções claras de compilação/execução do programação;
+		O link para o repositório no GitHub, onde todo o código fonte da
+		aplicação cliente e da aplicação servidora deve constar;
+		E quais funcionalidades opcionais foram implementadas.
+	No repositório do GitHub deve constar um arquivo README.md
+	contendo as seguintes informações:
+		Nome do(s) membro(s) da equipe;
+		Linguagem de programação utilizada;
+		Instruções claras de compilação/execução do programação;
+		Quais funcionalidades opcionais foram implementadas e em quais
+		arquivos.
+
+Caso as instruções de compilação/execução não estejam claras o
+suficientes para que eu possa avaliar o programa, os pontos referentes as
+funcionalidades opcionais serão desconsiderados e a pontuação principal será
+dividida por dois, ficando a equipe com três pontos.
+
+
+Caso haja dúvidas de como se trabalhar com socket, foi disponibilizado
+um projeto no meu GitHub pessoal com um exemplo. Também o livro base da
+disciplina, no capítulo 3, possui um exemplo de código de socket.
+
+Para aqueles que sabem o idioma inglês eu também recomendo o livro
+Java Network Programming, 4ª edição de 2014, da editora O’Reilly, que trata
+exaustivamente do assunto de programação em rede com a linguagem de
+programação Java.
+
+Qualquer outra dúvida eu estou disponível via e-mail
+bruno.lopes@unifor.br ou via torpedo no Unifor online. 

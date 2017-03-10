@@ -52,8 +52,17 @@
     <Compile Include="ClientGUI.Designer.cs">
       <DependentUpon>ClientGUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectionGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionGUI.Designer.cs">
+      <DependentUpon>ConnectionGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ConnectionGUI.resx">
+      <DependentUpon>ConnectionGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -75,6 +84,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chat\Chat.csproj">
+      <Project>{7f068020-a791-4d8f-8b76-0b1176f5fa8e}</Project>
+      <Name>Chat</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,29 @@
+
+
+
+Data: 27/3
+
+Básico (6pts):
+	1 servidor
+	N clientes
+
+	=> servidor multi-thread para atender a todos
+
+
+	Sistema pensado pra ser tipo um IRC
+		Salas de bate-papo
+		Uma sala comum inicial
+		Salas privadas pra PM
+		É possível ver o nome de todos os usuários da sala
+
+
+Extras ( pts):
+	GUI Cliente (1pt). Ver/usar chat, usuários logados na sala e enviar PMs
+	GUI Servidor (0.5pt). Ver/kickar usuários. Ver IP/Porta/Sala de cada usuário.
+	Usar XML/Json para comunicação (0.5pt)
+	Usar um protocolo binário para comunicação (2 pts)
+	Permitir usuários criarem salas (2 pts). O usuário vira admin dela e pode kickar pessoas.
+	Permitir usuários criarem salas privadas (3 pts). Igual o de cima, mas precisa de convite.
+	Sistema de status (2 pts). Online (verde), Ocupado (amarelo) e Ausente (Vermelho).
+
+
