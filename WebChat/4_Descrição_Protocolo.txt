@@ -2,4 +2,57 @@
 
 
 Comandos da camada de aplicação pra fazer a coisa funcionar:
-	
+
+Todo comando possui a seguinte estrutura:
+	Tipo + Paramêtros...
+
+E seguem as seguintes convenções
+	Cada tipo é identificado por um ID (byte).
+	Cada parâmetro é conhecido pelo protocolo baseado no tipo
+
+	Sizeof é a lenght de um array. Strings são tratadas como
+	arrays de chars
+
+
+
+// Conexão do cliente
+CONNECTION_REQUEST  Status Sizeof(Nome) NOME
+	Direção: Cliente -> Servidor
+CONNECTION_RESPONSE ID Sizeof(Clientes) Clientes
+	Direção: Servidor -> Cliente
+
+
+// Enviar Mensagem
+SEND_MESSAGE From To Sizeof(Message) Message
+	Direção: Cliente -> Servidor (publicar mensagem)
+			 Servidor -> Todos (propagação da mensagem)
+// Trocar estado
+CHANGE_STATE ID NewStatus
+	Direção: Cliente -> Servidor (publicar mensagem)
+			 Servidor -> Todos (propagação da mensagem)
+// Pedir pra sair
+DISCONNECT ID
+	Direção: Cliente -> Servidor (publicar mensagem)
+		Essa mensagem volta como um kick. Na prática, 
+		Desconectar é visto como pedir pra ser kickado.
+
+
+// Kick / Disconectar
+KICK ID
+	Direção: Servidor -> Todos
+
+
+
+Comandos:
+	CONNECTION_REQUEST
+	CONNECTION_RESPONSE
+	SEND_MESSAGE
+	CHANGE_STATE
+	DISCONNECT
+	KICK
+
+Formato binário:
+	Comandos são Ints
+	IDs são Ints
+	Sizeofs retornam Ints
+	Mensagens como array de caracteres em UTF-8

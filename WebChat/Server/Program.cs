@@ -13,7 +13,7 @@ namespace Server {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ServerGUI());
+            Application.Run(new ServerConnectionGUI());
         }
     }
 }

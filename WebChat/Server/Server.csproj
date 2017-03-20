@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ServerConnectionGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerConnectionGUI.Designer.cs">
+      <DependentUpon>ServerConnectionGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="ServerGUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,6 +69,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ServerConnectionGUI.resx">
+      <DependentUpon>ServerConnectionGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerGUI.resx">
+      <DependentUpon>ServerGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

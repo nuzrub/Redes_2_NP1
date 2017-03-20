@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 
 namespace Chat {
-    public class ClientData {
+    public class Client {
         public string Name { get; private set; }
         public int ID { get; private set; }
 
@@ -16,7 +16,7 @@ namespace Chat {
         public ClientStatus Status { get; set; }
 
 
-        public ClientData(string name, int id, IPAddress ip, ClientStatus status) {
+        public Client(string name, int id, IPAddress ip, ClientStatus status) {
             this.Name = name;
             this.ID = id;
             this.IP = ip;

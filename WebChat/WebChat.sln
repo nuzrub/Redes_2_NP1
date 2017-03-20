@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Descrição", "Descrição"
 		2_Descrição_Resumo.txt = 2_Descrição_Resumo.txt
 		3_Descrição_Implementação.txt = 3_Descrição_Implementação.txt
 		4_Descrição_Protocolo.txt = 4_Descrição_Protocolo.txt
+		9_TODO.txt = 9_TODO.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat", "Chat\Chat.csproj", "{7F068020-A791-4D8F-8B76-0B1176F5FA8E}"
