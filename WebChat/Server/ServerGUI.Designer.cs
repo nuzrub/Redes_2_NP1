@@ -57,7 +57,7 @@
             // desconectarToolStripMenuItem
             // 
             this.desconectarToolStripMenuItem.Name = "desconectarToolStripMenuItem";
-            this.desconectarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.desconectarToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.desconectarToolStripMenuItem.Text = "Encerrar";
             // 
             // statusStrip
@@ -127,6 +127,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "ServerGUI";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServerGUI_FormClosing);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
