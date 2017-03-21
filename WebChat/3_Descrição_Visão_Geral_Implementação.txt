@@ -64,10 +64,3 @@ Eu devo possuir alguma forma de status do cliente:
 			Apagar a janela de PM com esse cara
 			Tirar ele da lista
 		
-
-		
-	
-
-
-O Socket do C# funciona diferente, ele não me dá duas streams
-que eu posso ficar dando write e flush manualmente.

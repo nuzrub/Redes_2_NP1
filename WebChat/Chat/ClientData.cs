@@ -7,24 +7,20 @@ using System.Net;
 using System.Net.Sockets;
 
 namespace Chat {
-    public class Client {
+    public class ClientData {
         public string Name { get; private set; }
         public int ID { get; private set; }
-
-        public IPAddress IP { get; private set; }
-
         public ClientStatus Status { get; set; }
 
 
-        public Client(string name, int id, IPAddress ip, ClientStatus status) {
+        public ClientData(string name, int id, ClientStatus status) {
             this.Name = name;
             this.ID = id;
-            this.IP = ip;
             this.Status = status;
         }
 
         public override string ToString() {
-            return "[" + ID + ":" + Name + "@" + IP.ToString() + " (" + Status + ")]";
+            return "[" + ID + ":" + Name + " (" + Status + ")]";
         }
     }
 }

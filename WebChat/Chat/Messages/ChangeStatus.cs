@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace Chat.Messages {
     public class ChangeStatus : Message {
-        public int From_ { get; private set; }
+        public int Who { get; private set; }
         public ClientStatus NewStatus { get; private set; }
 
-        public ChangeStatus(int from, ClientStatus newStatus) : base(MessageType.ChangeStatus) {
-            this.From_ = from;
+        public ChangeStatus(int who, ClientStatus newStatus) : base(MessageType.ChangeStatus) {
+            this.Who = who;
             this.NewStatus = newStatus;
         }
 
         public override void Encode(BinaryWriter bw) {
             // ID do comando, Status, Sizeof(Name), Nome
             bw.Write(Convert.ToInt32(MsgType));
-            bw.Write(From_);
+            bw.Write(Who);
             bw.Write(Convert.ToInt32(NewStatus));
         }
     }

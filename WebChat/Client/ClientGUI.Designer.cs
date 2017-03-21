@@ -23,18 +23,25 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientGUI));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.sidePanel = new System.Windows.Forms.GroupBox();
-            this.mainPanel = new System.Windows.Forms.GroupBox();
-            this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.clienteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.desconectarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sendButton = new System.Windows.Forms.Button();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.ausenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ocupadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disponívelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sidePanel = new System.Windows.Forms.GroupBox();
+            this.contactsListbox = new System.Windows.Forms.ListBox();
+            this.mainPanel = new System.Windows.Forms.GroupBox();
+            this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.chatBox = new System.Windows.Forms.RichTextBox();
             this.typeMessageBox = new System.Windows.Forms.RichTextBox();
-            this.contactsListbox = new System.Windows.Forms.ListBox();
+            this.sendButton = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.sidePanel.SuspendLayout();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -53,13 +60,71 @@
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
+            // clienteToolStripMenuItem
+            // 
+            this.clienteToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.desconectarToolStripMenuItem});
+            this.clienteToolStripMenuItem.Name = "clienteToolStripMenuItem";
+            this.clienteToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.clienteToolStripMenuItem.Text = "Cliente";
+            // 
+            // desconectarToolStripMenuItem
+            // 
+            this.desconectarToolStripMenuItem.Name = "desconectarToolStripMenuItem";
+            this.desconectarToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.desconectarToolStripMenuItem.Text = "Desconectar";
+            this.desconectarToolStripMenuItem.Click += new System.EventHandler(this.desconectarToolStripMenuItem_Click);
+            // 
             // statusStrip
             // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButton1,
+            this.statusLabel});
             this.statusStrip.Location = new System.Drawing.Point(0, 378);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(800, 22);
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ausenteToolStripMenuItem,
+            this.ocupadoToolStripMenuItem,
+            this.disponívelToolStripMenuItem});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 20);
+            this.toolStripDropDownButton1.Text = "changeStatusButton";
+            // 
+            // ausenteToolStripMenuItem
+            // 
+            this.ausenteToolStripMenuItem.Name = "ausenteToolStripMenuItem";
+            this.ausenteToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.ausenteToolStripMenuItem.Text = "Ausente";
+            this.ausenteToolStripMenuItem.Click += new System.EventHandler(this.ausenteToolStripMenuItem_Click);
+            // 
+            // ocupadoToolStripMenuItem
+            // 
+            this.ocupadoToolStripMenuItem.Name = "ocupadoToolStripMenuItem";
+            this.ocupadoToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.ocupadoToolStripMenuItem.Text = "Ocupado";
+            this.ocupadoToolStripMenuItem.Click += new System.EventHandler(this.ocupadoToolStripMenuItem_Click);
+            // 
+            // disponívelToolStripMenuItem
+            // 
+            this.disponívelToolStripMenuItem.Name = "disponívelToolStripMenuItem";
+            this.disponívelToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.disponívelToolStripMenuItem.Text = "Disponível";
+            this.disponívelToolStripMenuItem.Click += new System.EventHandler(this.disponívelToolStripMenuItem_Click);
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(66, 17);
+            this.statusLabel.Text = "statusLabel";
             // 
             // sidePanel
             // 
@@ -71,6 +136,16 @@
             this.sidePanel.TabIndex = 2;
             this.sidePanel.TabStop = false;
             this.sidePanel.Text = "Contatos";
+            // 
+            // contactsListbox
+            // 
+            this.contactsListbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.contactsListbox.FormattingEnabled = true;
+            this.contactsListbox.Location = new System.Drawing.Point(3, 16);
+            this.contactsListbox.Name = "contactsListbox";
+            this.contactsListbox.Size = new System.Drawing.Size(194, 335);
+            this.contactsListbox.TabIndex = 0;
+            this.contactsListbox.SelectedIndexChanged += new System.EventHandler(this.contactsListbox_SelectedIndexChanged);
             // 
             // mainPanel
             // 
@@ -102,30 +177,6 @@
             this.splitContainer.SplitterDistance = 277;
             this.splitContainer.TabIndex = 0;
             // 
-            // clienteToolStripMenuItem
-            // 
-            this.clienteToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.desconectarToolStripMenuItem});
-            this.clienteToolStripMenuItem.Name = "clienteToolStripMenuItem";
-            this.clienteToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
-            this.clienteToolStripMenuItem.Text = "Cliente";
-            // 
-            // desconectarToolStripMenuItem
-            // 
-            this.desconectarToolStripMenuItem.Name = "desconectarToolStripMenuItem";
-            this.desconectarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.desconectarToolStripMenuItem.Text = "Desconectar";
-            // 
-            // sendButton
-            // 
-            this.sendButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.sendButton.Location = new System.Drawing.Point(459, 0);
-            this.sendButton.Name = "sendButton";
-            this.sendButton.Size = new System.Drawing.Size(135, 54);
-            this.sendButton.TabIndex = 0;
-            this.sendButton.Text = "Enviar";
-            this.sendButton.UseVisualStyleBackColor = true;
-            // 
             // chatBox
             // 
             this.chatBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -144,14 +195,16 @@
             this.typeMessageBox.TabIndex = 1;
             this.typeMessageBox.Text = "";
             // 
-            // contactsListbox
+            // sendButton
             // 
-            this.contactsListbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.contactsListbox.FormattingEnabled = true;
-            this.contactsListbox.Location = new System.Drawing.Point(3, 16);
-            this.contactsListbox.Name = "contactsListbox";
-            this.contactsListbox.Size = new System.Drawing.Size(194, 335);
-            this.contactsListbox.TabIndex = 0;
+            this.sendButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.sendButton.Location = new System.Drawing.Point(459, 0);
+            this.sendButton.Name = "sendButton";
+            this.sendButton.Size = new System.Drawing.Size(135, 54);
+            this.sendButton.TabIndex = 0;
+            this.sendButton.Text = "Enviar";
+            this.sendButton.UseVisualStyleBackColor = true;
+            this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
             // 
             // ClientGUI
             // 
@@ -167,6 +220,8 @@
             this.Text = "Form1";
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.sidePanel.ResumeLayout(false);
             this.mainPanel.ResumeLayout(false);
             this.splitContainer.Panel1.ResumeLayout(false);
@@ -191,6 +246,11 @@
         private System.Windows.Forms.RichTextBox chatBox;
         private System.Windows.Forms.RichTextBox typeMessageBox;
         private System.Windows.Forms.Button sendButton;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripMenuItem ausenteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ocupadoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disponívelToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
     }
 }
 

@@ -1,0 +1,20 @@
+
+
+
+Em C#, o socket não me dá duas streams, você deve encapsulá-lo usando
+uma NetworkStream e BinaryWriter/Readers.
+
+Há uma implementação completamente Async de Sockets, que não requer
+a criação de uma thread explícita. Tal recurso pode ser acessado pelos
+métodos que começam em "Begin..." e "End...". No entanto, a sintáxe
+dessa abordagem é bem mais complicada e não oferece muitos ganhos
+para uma aplicação pequena.
+Nesta implementação, será utilizada a técnica de sockets asíncronos de
+forma manual, criando threads que rodam o socket síncrono.
+
+Afim de facilitar todo o resto da implementação, a complexidade de 
+gerência dos sockets deve ser encapsulada em uma interface de fácil
+uso e compreensão.
+Para tal, desenvolvemos o SocketHandler. Esta classe se responsabiliza
+por gerenciar a thread do socket, receber mensagens que devem ser 
+enviadas e notificar a aplicação de mensagens recebidas.

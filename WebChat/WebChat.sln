@@ -11,8 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Descrição", "Descrição"
 	ProjectSection(SolutionItems) = preProject
 		1_Descrição_Completa.txt = 1_Descrição_Completa.txt
 		2_Descrição_Resumo.txt = 2_Descrição_Resumo.txt
-		3_Descrição_Implementação.txt = 3_Descrição_Implementação.txt
+		3_Descrição_Visão_Geral_Implementação.txt = 3_Descrição_Visão_Geral_Implementação.txt
 		4_Descrição_Protocolo.txt = 4_Descrição_Protocolo.txt
+		5_Descrição_Implementação.txt = 5_Descrição_Implementação.txt
 		9_TODO.txt = 9_TODO.txt
 	EndProjectSection
 EndProject

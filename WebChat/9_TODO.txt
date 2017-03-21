@@ -1,10 +1,5 @@
 
 
 
-Copiar o Connection pro Servidor e adaptar
-Montar a tela do Servidor
-Por o servidor pra ouvir
-Por o cliente pra conectar
-	Descobrir como lançar várias instâncias juntas
-
-Montar a tela do Cliente
+Eu esqueci de um detalhe: ser notificado de novos clientes
+	Isso inclui atualizar a lista de clientes

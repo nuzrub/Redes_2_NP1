@@ -22,33 +22,7 @@ namespace Server {
         private void Log(string message) {
             logBox.Items.Add(message);
         }
-        private void Connect(int porta) {
-            IPEndPoint localEndPoint = new IPEndPoint(
-                new IPAddress(new byte[] { 127, 0, 0, 1 }), 
-                porta);
-            
-            Socket serverSocket = new Socket(
-                AddressFamily.InterNetwork,
-                SocketType.Stream, 
-                ProtocolType.Tcp);
 
-            // Bind the socket to the local endpoint and   
-            // listen for incoming connections.  
-            try {
-                serverSocket.Bind(localEndPoint);
-                serverSocket.Listen(10);
-
-                Log("Server inicializado na porta " + portBox.Text + ".");
-
-                ServerGUI serverGUI = new ServerGUI(serverSocket);
-                serverGUI.ShowDialog();
-
-                Log("Server encerrado.");
-                Log("");
-            } catch (Exception e) {
-                Console.WriteLine(e.ToString());
-            }
-        }
         private void connectButton_Click(object sender, EventArgs e) {
             portBox.Enabled = false;
 
@@ -67,8 +41,16 @@ namespace Server {
             Log("Os valores de entrada foram lidos com sucesso.");
             #endregion
 
-            Connect(porta);
+            ServerHandler handler = ServerHandler.Connect(porta);
+            if (handler != null) {
+                Log("Server inicializado na porta " + portBox.Text + ".");
 
+                ServerGUI serverGUI = new ServerGUI(handler);
+                serverGUI.ShowDialog();
+
+                Log("Server encerrado.");
+                Log("");
+            }
 
             portBox.Enabled = true;
         }

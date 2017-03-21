@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 
 namespace Chat {
-    public class ClientList : List<Client> {
+    public class ClientList : List<ClientData> {
         public ClientList() {
 
         }
