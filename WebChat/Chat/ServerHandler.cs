@@ -12,6 +12,9 @@ namespace Chat {
         private ClientList Clients { get; private set; }
         private Thread connectionListenerThread;
         private Socket connectionListener;
+        private List<Thread> clientListenerThreads;
+        private List<Socket> clientListeners;
+
         private List<SocketHelper> ClientLinks;
         private object disconnectMutex;
         private bool disconnectRequested;
