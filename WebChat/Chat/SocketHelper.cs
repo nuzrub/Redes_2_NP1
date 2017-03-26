@@ -37,12 +37,14 @@ namespace Chat {
                 while (socketStream.DataAvailable) {
                     msg = ReadMessage();
                     inboundMessages.Enqueue(msg);
+                    Console.WriteLine("Lendo: " + msg.MsgType);
                 }
             }
             lock (outboundMessages) {
                 while (outboundMessages.Count > 0) {
                     msg = outboundMessages.Dequeue();
                     WriteMessage(msg);
+                    Console.WriteLine("Escrevendo: " + msg.MsgType);
                 }
             }
         }

@@ -43,6 +43,7 @@ namespace Client {
 
 
         private void UpdateUI() {
+            handler.Update();
             statusLabel.Text = handler.Name + " (" + handler.Status + ")";
 
             if (handler.RecentlyConnectedClients.Count > 0) {
@@ -63,6 +64,7 @@ namespace Client {
             }
 
             UpdateChatBox();
+            Application.DoEvents();
         }
 
         private void UpdateChatBox() {

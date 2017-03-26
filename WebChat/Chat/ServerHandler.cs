@@ -32,8 +32,68 @@ namespace Chat {
 
             StartListenerThread();
         }
-        
-        
+
+        public int RequestNewID() {
+            int output;
+            lock (globalIdMutex) {
+                output = nextGlobalID;
+                nextGlobalID++;
+            }
+            return output;
+        }
+
+        public void BroadcastNewClient(ServerClientHandler newClientHandler) {
+            ClientData nc = newClientHandler.RemoteClientData;
+            NotifyNewClient nnc = new NotifyNewClient(nc.ID, nc.Status, nc.Name);
+
+            // Avisar os outros do cara novo
+            foreach (var handler in serverClientHandlers) {
+                if (handler != newClientHandler) {
+                    handler.ForwardMessage(nnc);
+                }
+            }
+            // Avisar o cara novo dos outros
+            foreach (var handler in serverClientHandlers) {
+                if (handler != newClientHandler) {
+                    nc = handler.RemoteClientData;
+                    nnc = new NotifyNewClient(nc.ID, nc.Status, nc.Name);
+                    newClientHandler.ForwardMessage(nnc);
+                }
+            }
+        }
+        public void BroadcastSendMessage(SendMessage sm) {
+            foreach (var handler in serverClientHandlers) {
+                if (handler.RemoteClientData.ID != sm.From_) {
+                    handler.ForwardMessage(sm);
+                }
+            }
+        }
+        public void BroadcastChangeStatus(ChangeStatus cs) {
+            foreach (var handler in serverClientHandlers) {
+                if (handler.RemoteClientData.ID != cs.Who) {
+                    handler.ForwardMessage(cs);
+                }
+            }
+        }
+        public void HandleDisconnectRequest(Disconnect d, ServerClientHandler handler) {
+            Kick k = new Kick(d.Who);
+            handler.ForwardMessage(k);
+            BroadcastKick(k);
+        }
+        public void BroadcastKick(Kick k) {
+            ServerClientHandler targetHandler = null;
+            foreach (var handler in serverClientHandlers) {
+                if (handler.RemoteClientData.ID == k.Who) {
+                    targetHandler = handler;
+                } else {
+                    handler.ForwardMessage(k);
+                }
+            }
+            Debug.Assert(targetHandler != null);
+            serverClientHandlers.Remove(targetHandler);
+        }
+
+
         private void StartListenerThread() {
             connectionListenerThread = new Thread(ConnectionListenerTask);
             connectionListenerThread.Start();
@@ -51,25 +111,15 @@ namespace Chat {
                 Socket clientLink = connectionListener.Accept();
                 serverClientHandlers.Add(new ServerClientHandler(this, clientLink));
                 Console.WriteLine("Cliente conectado");
+
+                // dá a vez
+                Thread.Yield();
             }
 
             foreach (var sch in serverClientHandlers) {
                 sch.NotifyDisconnection();
             }
         }
-        
-
-        public int RequestNewID() {
-            int output;
-            lock (globalIdMutex) {
-                output = nextGlobalID;
-                nextGlobalID++;
-            }
-            return output;
-        }
-
-
-
 
         public static ServerHandler Connect(int porta) {
             IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Loopback, porta);

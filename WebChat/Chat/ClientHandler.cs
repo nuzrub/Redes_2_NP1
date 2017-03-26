@@ -81,7 +81,10 @@ namespace Chat {
             Message msg;
             while (true) {
                 msg = serverLink.DequeueReceivedMessage();
-                if (msg != null) {
+                if (msg == null) {
+                    break;
+                } else {
+                    Console.WriteLine(this.Name + " recebeu mensagem do tipo: " + msg.MsgType);
                     switch (msg.MsgType) {
                         case MessageType.NotifyNewClient:
                             NotifyNewClient nnc = (NotifyNewClient)msg;

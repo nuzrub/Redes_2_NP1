@@ -14,7 +14,7 @@ namespace Chat.Messages {
         public ClientStatus NewClientStatus { get; private set; }
         public string ClientName { get; private set; }
 
-        public NotifyNewClient(int newClientID, ClientStatus newClientStatus, string clientName) : base(MessageType.ConnectionRequest) {
+        public NotifyNewClient(int newClientID, ClientStatus newClientStatus, string clientName) : base(MessageType.NotifyNewClient) {
             this.NewClientID = newClientID;
             this.NewClientStatus = newClientStatus;
             this.ClientName = clientName;
