@@ -114,6 +114,7 @@
             this.kickButton.TabIndex = 4;
             this.kickButton.Text = "Kickar Selecionados";
             this.kickButton.UseVisualStyleBackColor = true;
+            this.kickButton.Click += new System.EventHandler(this.kickButton_Click);
             // 
             // ServerGUI
             // 

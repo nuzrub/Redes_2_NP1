@@ -22,8 +22,11 @@ Eu devo possuir alguma forma de status do cliente:
 		Seu status
 		O ip eu já tenho pela conexão.
 	O servidor responde:
-		Clientes na mesma sala (nome-id)
 		ID do cliente
+	Depois, ele envia, para cada outro cliente, o ID e nome de cada um
+		Isso serve pra notificar o novo cliente dos clientes antigos
+	Em seguida, para cada outro cliente, ele deve informar do cliente que chegou
+		Isso faz com que os clientes antigos tomem conhecimento do novo cliente
 	Entra em modo standby
 		Fica esperando por mensagens e novos clientes
 

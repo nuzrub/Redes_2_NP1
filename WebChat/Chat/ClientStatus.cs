@@ -8,6 +8,7 @@ namespace Chat {
     public enum ClientStatus {
         Online, 
         Busy, 
-        Away
+        Away,
+        Disconnected
     }
 }

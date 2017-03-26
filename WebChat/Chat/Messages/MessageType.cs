@@ -12,6 +12,7 @@ namespace Chat.Messages {
     public enum MessageType {
         ConnectionRequest, 
         ConnectionResponse, 
+        NotifyNewClient,
         SendMessage, 
         ChangeStatus, 
         Disconnect, 

@@ -18,7 +18,12 @@ E seguem as seguintes convenções
 // Conexão do cliente
 CONNECTION_REQUEST  Status Sizeof(Nome) NOME
 	Direção: Cliente -> Servidor
-CONNECTION_RESPONSE ID Sizeof(Clientes) Clientes
+CONNECTION_RESPONSE ID
+	Direção: Servidor -> Cliente
+
+
+// Informar da existencia de um outro Cliente
+NOTIFY_NEW_CLIENT ID Sizeof(Nome) NOME
 	Direção: Servidor -> Cliente
 
 
@@ -46,6 +51,7 @@ KICK ID
 Comandos:
 	CONNECTION_REQUEST
 	CONNECTION_RESPONSE
+	NOTIFY_NEW_CLIENT
 	SEND_MESSAGE
 	CHANGE_STATE
 	DISCONNECT

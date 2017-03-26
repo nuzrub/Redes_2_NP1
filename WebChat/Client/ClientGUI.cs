@@ -14,42 +14,59 @@ using Chat;
 namespace Client {
     public partial class ClientGUI : Form {
         private ClientHandler handler;
-        private List<string> chats;
-
+        private Dictionary<int, int> idIndexMapping;
         private int currentChatID {
-            get { return contactsListbox.SelectedIndex; }
+            get { return idIndexMapping[contactsListbox.SelectedIndex]; }
         }
-        private string currentChat {
-            get { return chats[currentChatID]; }
-            set { chats[currentChatID] = value; }
-        }
-        private string generalChat {
-            get { return chats[0]; }
-            set { chats[0] = value; }
+        private string currentChatText {
+            get {
+                if (currentChatID == 0) {
+                    return handler.GlobalChat.ToString();
+                } else {
+                    return handler.PrivateChats[currentChatID].ToString();
+                }
+            }
         }
 
         public ClientGUI(ClientHandler handler) {
             InitializeComponent();
 
             this.handler = handler;
-            statusLabel.Text = handler.Name + " (" + handler.Status + ")";
+            this.idIndexMapping = new Dictionary<int, int>();
+            idIndexMapping.Add(0, 0);
+
+            contactsListbox.Items.Add("Global Chat");
+            contactsListbox.SelectedIndex = 0;
+
+            UpdateUI();
         }
 
-        
-        public void ReceiveMessage(int from_, int to_, string message) {
 
-            if (to_ == 0) {
-                generalChat += message;
-            } else if (to_ == handler.ID) {
-                chats[from_] += message;
-            } else {
-                throw new ArgumentException("Essa mensagem não deveria ter vindo pra esse cliente.");
+        private void UpdateUI() {
+            statusLabel.Text = handler.Name + " (" + handler.Status + ")";
+
+            if (handler.RecentlyConnectedClients.Count > 0) {
+                foreach (var client in handler.RecentlyConnectedClients) {
+                    idIndexMapping.Add(contactsListbox.Items.Count, client.ID);
+                    contactsListbox.Items.Add(client.Name);
+                }
+                handler.RecentlyConnectedClients.Clear();
             }
-            
+
+            foreach (var key in idIndexMapping.Keys) {
+                if (key == 0) {
+                    continue;
+                }
+
+                var client = handler.OtherClients[idIndexMapping[key]];
+                contactsListbox.Items[key] = client.Name + "(" + client.Status + ")";
+            }
+
             UpdateChatBox();
         }
+
         private void UpdateChatBox() {
-            chatBox.Text = currentChat;
+            chatBox.Text = currentChatText;
         }
 
         private void sendButton_Click(object sender, EventArgs e) {
@@ -81,6 +98,10 @@ namespace Client {
         }
         private void ausenteToolStripMenuItem_Click(object sender, EventArgs e) {
             ChangeStatus(ClientStatus.Away);
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e) {
+            UpdateUI();
         }
     }
 }
