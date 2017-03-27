@@ -196,6 +196,7 @@
             this.typeMessageBox.Size = new System.Drawing.Size(459, 54);
             this.typeMessageBox.TabIndex = 1;
             this.typeMessageBox.Text = "";
+            this.typeMessageBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.typeMessageBox_KeyPress);
             // 
             // sendButton
             // 
@@ -226,6 +227,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "ClientGUI";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ClientGUI_FormClosing);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);

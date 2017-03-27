@@ -18,66 +18,89 @@ namespace Chat {
         public StringBuilder GlobalChat { get; private set; }
 
         private SocketHelper serverLink;
+        private bool disconnected;
 
 
-        private ClientHandler(string name, int id, ClientStatus status, Socket serverLink) : base(name, id, status) {
-            this.serverLink = new SocketHelper(serverLink);
+        private ClientHandler(string name, int id, ClientStatus status, SocketHelper serverLink) : base(name, id, status) {
+            this.serverLink = serverLink;
             this.OtherClients = new Dictionary<int, ClientData>();
             this.PrivateChats = new Dictionary<int, StringBuilder>();
             this.RecentlyConnectedClients = new List<ClientData>();
             this.GlobalChat = new StringBuilder();
+            this.disconnected = false;
 
             GlobalChat.AppendLine("[Sistema:] Você entrou no chat global.");
         }
 
         public void SendMessage(int destinationID, string message) {
-            SendMessage sm = new SendMessage(ID, destinationID, message);
-            serverLink.EnqueueForSending(sm);
+            if (!disconnected) {
+                SendMessage sm = new SendMessage(ID, destinationID, message);
+                serverLink.EnqueueForSending(sm);
 
-            ReceiveMessage(sm);
+                ReceiveMessage(sm);
+            }
         }
         private void ReceiveMessage(SendMessage sm) {
-            // Mensagem que o cliente enviou
-            if (sm.From_ == this.ID) {
-                if (sm.To_ == 0) {
-                    GlobalChat.AppendLine("[" + this.Name + ": " + sm.Msg);
+            if (!disconnected) {
+                // Mensagem que o cliente enviou
+                if (sm.From_ == this.ID) {
+                    if (sm.To_ == 0) {
+                        GlobalChat.AppendLine("[" + this.Name + ":] " + sm.Msg);
+                    } else {
+                        PrivateChats[sm.To_].AppendLine("[" + this.Name + ":] " + sm.Msg);
+                    }
                 } else {
-                    PrivateChats[sm.To_].AppendLine("[" + this.Name + ": " + sm.Msg);
-                }
-            } else {
-                ClientData sender = OtherClients[sm.From_];
-                if (sm.To_ == 0) {
-                    GlobalChat.AppendLine("[" + sender.Name + ": " + sm.Msg);
-                } else {
-                    PrivateChats[sm.To_].AppendLine("[" + sender.Name + ": " + sm.Msg);
+                    ClientData sender = OtherClients[sm.From_];
+                    if (sm.To_ == 0) {
+                        GlobalChat.AppendLine("[" + sender.Name + ":] " + sm.Msg);
+                    } else {
+                        // Todas as mensagens que não são globais devem ser pra esse cliente
+                        Debug.Assert(sm.To_ == this.ID);
+                        PrivateChats[sm.From_].AppendLine("[" + sender.Name + ":] " + sm.Msg);
+                    }
                 }
             }
         }
         public void ChangeStatus(ClientStatus newStatus) {
-            ChangeStatus cs = new ChangeStatus(ID, newStatus);
-            serverLink.EnqueueForSending(cs);
+            if (!disconnected) {
+                ChangeStatus cs = new ChangeStatus(ID, newStatus);
+                serverLink.EnqueueForSending(cs);
 
-            this.Status = newStatus;
-            foreach (var key in PrivateChats.Keys) {
-                PrivateChats[key].AppendLine("[Sistema:] Você mudou seu estado para: " + newStatus);
+                this.Status = newStatus;
+                foreach (var key in PrivateChats.Keys) {
+                    PrivateChats[key].AppendLine("[Sistema:] Você mudou seu estado para: " + newStatus);
+                }
+                GlobalChat.AppendLine("[Sistema:] Você mudou seu estado para: " + newStatus);
             }
-            GlobalChat.AppendLine("[Sistema:] Você mudou seu estado para: " + newStatus);
         }
         public void Disconnect() {
-            // Falar com o server primeiro.
-            Disconnect d = new Disconnect(ID);
-            serverLink.EnqueueForSending(d);
-            serverLink.Dispose();
+            if (!disconnected) {
+                // Falar com o server primeiro.
+                Disconnect d = new Disconnect(ID);
+                serverLink.EnqueueForSending(d);
 
-            foreach (var key in PrivateChats.Keys) {
-                PrivateChats[key].AppendLine("[Sistema:] Você se desconectou do sistema");
+                foreach (var key in PrivateChats.Keys) {
+                    PrivateChats[key].AppendLine("[Sistema:] Você se desconectou do sistema");
+                }
+                GlobalChat.AppendLine("[Sistema:] Você se desconectou do sistema");
+
+                disconnected = true;
             }
-            GlobalChat.AppendLine("[Sistema:] Você se desconectou do sistema");
+        }
+        public void TurnOff() {
+            serverLink.Dispose();
         }
 
         public void Update() {
+            // Atualiza pra enviar/receber mensagens
             serverLink.Update();
+            // Se tiver desconectado, desconsidera qualquer mensagem que possa
+            // estar no link.
+            if (disconnected) {
+                return;
+            }
 
+            
             Message msg;
             while (true) {
                 msg = serverLink.DequeueReceivedMessage();
@@ -131,7 +154,7 @@ namespace Chat {
                     serverRawLink.Connect(remoteEP);
                     SocketHelper serverLink = new SocketHelper(serverRawLink);
 
-                    Messages.ConnectionRequest creq = new Messages.ConnectionRequest(status, name);
+                    ConnectionRequest creq = new ConnectionRequest(status, name);
                     serverLink.EnqueueForSending(creq);
                     Console.WriteLine("Connection Request sent by Client");
 
@@ -139,12 +162,15 @@ namespace Chat {
                         serverLink.Update();
                         Messages.Message msg = serverLink.DequeueReceivedMessage();
                         if (msg != null) {
-                            Debug.Assert(msg.MsgType == Messages.MessageType.ConnectionResponse);
+                            if (msg.MsgType != MessageType.ConnectionResponse) {
+                                serverLink.RequeueReceivedMessage(msg);
+                                Thread.Yield();
+                            } else {
+                                ConnectionResponse crep = (ConnectionResponse)msg;
+                                Console.WriteLine("Connection Response Received at Client");
 
-                            Messages.ConnectionResponse crep = (Messages.ConnectionResponse)msg;
-                            Console.WriteLine("Connection Response Received at Client");
-
-                            return new ClientHandler(name, crep.ClientID, status, serverRawLink);
+                                return new ClientHandler(name, crep.ClientID, status, serverLink);
+                            }
                         }
                     }
                 } catch (ArgumentNullException ane) {

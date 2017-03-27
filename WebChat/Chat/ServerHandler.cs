@@ -62,9 +62,20 @@ namespace Chat {
             }
         }
         public void BroadcastSendMessage(SendMessage sm) {
-            foreach (var handler in serverClientHandlers) {
-                if (handler.RemoteClientData.ID != sm.From_) {
-                    handler.ForwardMessage(sm);
+            if (sm.To_ == 0) {
+                foreach (var handler in serverClientHandlers) {
+                    if (handler.RemoteClientData.ID != sm.From_) {
+                        handler.ForwardMessage(sm);
+                    }
+                }
+            } else {
+                foreach (var handler in serverClientHandlers) {
+                    if (handler.RemoteClientData.ID != sm.From_) {
+                        if (handler.RemoteClientData.ID == sm.To_) {
+                            handler.ForwardMessage(sm);
+                            break;
+                        }
+                    }
                 }
             }
         }

@@ -63,6 +63,11 @@ namespace Chat {
                 }
             }
         }
+        public void RequeueReceivedMessage(Message msg) {
+            lock (inboundMessages) {
+                inboundMessages.Enqueue(msg);
+            }
+        }
 
 
         private void WriteMessage(Message message) {
@@ -112,11 +117,11 @@ namespace Chat {
         }
 
         public void Dispose() {
-            writer.Dispose();
-            reader.Dispose();
-            socketStream.Dispose();
-            socket.Shutdown(SocketShutdown.Both);
-            socket.Dispose();
+            //writer.Dispose();
+            //reader.Dispose();
+            //socketStream.Dispose();
+            //socket.Shutdown(SocketShutdown.Both);
+            //socket.Dispose();
         }
     }
 }
