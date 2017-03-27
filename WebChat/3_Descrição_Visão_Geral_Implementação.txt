@@ -2,20 +2,23 @@
 
 Recursos:
 	Básico
-	Interface cliente e servidor
+	Interface cliente 
+	Interface servidor
 	Sistema de status
 	Comunicação binária.
 		= 6 + 1 + 0.5 + 2 + 2 = 11.5 pts (1.5 de folga).
 
 
-Eu devo possuir alguma forma de status do cliente:
+Eu devo possuir alguma forma de estado do cliente:
 	Nome, Status, Ip, ID
 		Não é necessário saber a sala que ele tá, pois não vão ter múltiplas salas
 		Nome (ou nick) é importante
 		Status é pro extra
-		Ip é pra interface servidor
 		ID é pra poder identificar o cliente sem precisar duma string
+		IP e Porta do cliente é algo que fica no socket e não precisa ficar no estado.
 
+
+Em linhas gerais, o protocolo desenvolvido funciona da seguinte forma:
 	// Conexão
 	O cliente se conecta ao servidor e envia:
 		Seu nome
@@ -23,17 +26,25 @@ Eu devo possuir alguma forma de status do cliente:
 		O ip eu já tenho pela conexão.
 	O servidor responde:
 		ID do cliente
-	Depois, ele envia, para cada outro cliente, o ID e nome de cada um
-		Isso serve pra notificar o novo cliente dos clientes antigos
-	Em seguida, para cada outro cliente, ele deve informar do cliente que chegou
-		Isso faz com que os clientes antigos tomem conhecimento do novo cliente
-	Entra em modo standby
+
+	Em seguida, o servidor tem de alertar a todos os clientes do cliente novo
+	e alertar o cliente novo de todos os clientes antigos.
+	Isso é feito com uma mensagem de notificação de usuário.
+	Ao todo, são 2n-2 mensagens. 
+		n-1 mensagens, uma para cada outro cliente alertando do novo cliente
+		n-1 mensagens, todas para o novo cliente, cada uma falando de um dos clientes antigos.
+	
+	Por fim, o server volta ao modo standby
 		Fica esperando por mensagens e novos clientes
 
+
+
 	// Envio de Mensagem
-	O sistema de envio de mensagem é o mesmo pra cliente/servidor
-	e para pm/pública. Tendo o ID do remetente e do destinatário, 
-	é possível saber se é uma PM ou uma pública.
+	Toda a troca de mensagens é feita por uma mensagem do tipo SendMessage.
+	Essa mensagem carrega o ID do remetente, o ID do destinatário e o conteúdo.
+	Mensagens enviadas para o ID 0 (zero) são para o chat global.
+	Mensagens enviadas para um ID não zero são mensagens privadas.
+	Em detalhes:
 		O cliente envia uma mensagem. Em outras palavras, ele envia:
 			Que é uma mensagem
 			De quem ela é (ID)
@@ -47,15 +58,22 @@ Eu devo possuir alguma forma de status do cliente:
 			Para quem (ID, 0 para público)
 			O tamanho da mensagem
 			A mensagem em si.
+		Quando o(s) destino(s) recebem a mensagem, eles conseguem deduzir
+		se ela é privada ou global pelo ID do destinatário.
+
+
 
 	// Troca de estado
 	Funciona da mesma forma que enviar uma mensagem
 	Mas envia o estado ao invés da string.
 
+
+
 	// Desconectar e Kick
 	O desconectar e o kickar são implementados iguais.
 	Na prática, o desconectar é o cliente pedindo pra ser kickado.
-	Na interface, o que muda é a mensagem.
+	Em ambos os casos, o cliente vê que foi desconectado.
+	Em detalhes, o passo-a-passo é:
 		O cliente envia uma mensagem
 			Que é de desconectar
 			Quem ele é (ID)
@@ -66,4 +84,11 @@ Eu devo possuir alguma forma de status do cliente:
 		Ao receber uma mensagem de kick:
 			Apagar a janela de PM com esse cara
 			Tirar ele da lista
+
+
+
+	// Servidor é Desligado
+	Caso o servidor seja desligado, ele envia uma mensagem de Kick
+	para cada usuário, derrubando completamente todos os nós envolvidos.
+	Em seguida, ele é efetivamente derrubado.
 		

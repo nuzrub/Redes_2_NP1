@@ -16,7 +16,9 @@ A aplicação de chat a ser desenvolvida funcionará com o conceitos de
 salas de bate papo (e.g. Chat Uol, IRC, etc). Então um usuário recém logado irá
 para uma sala comum a todos os usuários e nessa sala poderá interagir com
 todos os outros usuários logados ou enviar mensagens em particular para um
-determinado usuário.A aplicação de chat deve, no mínimo, possuir os seguintes recursos
+determinado usuário.
+
+A aplicação de chat deve, no mínimo, possuir os seguintes recursos
 disponíveis aos usuários:
 		Uma sala de bate papo geral, onde todos os usuários logados
 	podem trocar mensagens entre si;
@@ -94,4 +96,5 @@ exaustivamente do assunto de programação em rede com a linguagem de
 programação Java.
 
 Qualquer outra dúvida eu estou disponível via e-mail
-bruno.lopes@unifor.br ou via torpedo no Unifor online. 
+bruno.lopes@unifor.br ou via torpedo no Unifor online.
+ 

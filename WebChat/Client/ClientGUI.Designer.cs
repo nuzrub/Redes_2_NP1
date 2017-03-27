@@ -54,11 +54,13 @@
             // 
             // menuStrip
             // 
+            this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clienteToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(1067, 28);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -67,24 +69,26 @@
             this.clienteToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.desconectarToolStripMenuItem});
             this.clienteToolStripMenuItem.Name = "clienteToolStripMenuItem";
-            this.clienteToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.clienteToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
             this.clienteToolStripMenuItem.Text = "Cliente";
             // 
             // desconectarToolStripMenuItem
             // 
             this.desconectarToolStripMenuItem.Name = "desconectarToolStripMenuItem";
-            this.desconectarToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.desconectarToolStripMenuItem.Size = new System.Drawing.Size(166, 26);
             this.desconectarToolStripMenuItem.Text = "Desconectar";
             this.desconectarToolStripMenuItem.Click += new System.EventHandler(this.desconectarToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDropDownButton1,
             this.statusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 378);
+            this.statusStrip.Location = new System.Drawing.Point(0, 466);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
+            this.statusStrip.Size = new System.Drawing.Size(1067, 26);
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -98,43 +102,48 @@
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 20);
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(34, 24);
             this.toolStripDropDownButton1.Text = "changeStatusButton";
             // 
             // ausenteToolStripMenuItem
             // 
+            this.ausenteToolStripMenuItem.BackColor = System.Drawing.Color.Red;
             this.ausenteToolStripMenuItem.Name = "ausenteToolStripMenuItem";
-            this.ausenteToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.ausenteToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.ausenteToolStripMenuItem.Text = "Ausente";
             this.ausenteToolStripMenuItem.Click += new System.EventHandler(this.ausenteToolStripMenuItem_Click);
             // 
             // ocupadoToolStripMenuItem
             // 
+            this.ocupadoToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.ocupadoToolStripMenuItem.Name = "ocupadoToolStripMenuItem";
-            this.ocupadoToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.ocupadoToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.ocupadoToolStripMenuItem.Text = "Ocupado";
             this.ocupadoToolStripMenuItem.Click += new System.EventHandler(this.ocupadoToolStripMenuItem_Click);
             // 
             // disponívelToolStripMenuItem
             // 
+            this.disponívelToolStripMenuItem.BackColor = System.Drawing.Color.Lime;
             this.disponívelToolStripMenuItem.Name = "disponívelToolStripMenuItem";
-            this.disponívelToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.disponívelToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.disponívelToolStripMenuItem.Text = "Disponível";
             this.disponívelToolStripMenuItem.Click += new System.EventHandler(this.disponívelToolStripMenuItem_Click);
             // 
             // statusLabel
             // 
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(66, 17);
+            this.statusLabel.Size = new System.Drawing.Size(83, 21);
             this.statusLabel.Text = "statusLabel";
             // 
             // sidePanel
             // 
             this.sidePanel.Controls.Add(this.contactsListbox);
             this.sidePanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.sidePanel.Location = new System.Drawing.Point(0, 24);
+            this.sidePanel.Location = new System.Drawing.Point(0, 28);
+            this.sidePanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.sidePanel.Name = "sidePanel";
-            this.sidePanel.Size = new System.Drawing.Size(200, 354);
+            this.sidePanel.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.sidePanel.Size = new System.Drawing.Size(267, 438);
             this.sidePanel.TabIndex = 2;
             this.sidePanel.TabStop = false;
             this.sidePanel.Text = "Contatos";
@@ -143,9 +152,11 @@
             // 
             this.contactsListbox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.contactsListbox.FormattingEnabled = true;
-            this.contactsListbox.Location = new System.Drawing.Point(3, 16);
+            this.contactsListbox.ItemHeight = 16;
+            this.contactsListbox.Location = new System.Drawing.Point(4, 19);
+            this.contactsListbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.contactsListbox.Name = "contactsListbox";
-            this.contactsListbox.Size = new System.Drawing.Size(194, 335);
+            this.contactsListbox.Size = new System.Drawing.Size(259, 415);
             this.contactsListbox.TabIndex = 0;
             this.contactsListbox.SelectedIndexChanged += new System.EventHandler(this.contactsListbox_SelectedIndexChanged);
             // 
@@ -153,9 +164,11 @@
             // 
             this.mainPanel.Controls.Add(this.splitContainer);
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainPanel.Location = new System.Drawing.Point(200, 24);
+            this.mainPanel.Location = new System.Drawing.Point(267, 28);
+            this.mainPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(600, 354);
+            this.mainPanel.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.mainPanel.Size = new System.Drawing.Size(800, 438);
             this.mainPanel.TabIndex = 3;
             this.mainPanel.TabStop = false;
             this.mainPanel.Text = "Mensagens";
@@ -163,7 +176,8 @@
             // splitContainer
             // 
             this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer.Location = new System.Drawing.Point(3, 16);
+            this.splitContainer.Location = new System.Drawing.Point(4, 19);
+            this.splitContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.splitContainer.Name = "splitContainer";
             this.splitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -175,16 +189,18 @@
             // 
             this.splitContainer.Panel2.Controls.Add(this.typeMessageBox);
             this.splitContainer.Panel2.Controls.Add(this.sendButton);
-            this.splitContainer.Size = new System.Drawing.Size(594, 335);
-            this.splitContainer.SplitterDistance = 277;
+            this.splitContainer.Size = new System.Drawing.Size(792, 415);
+            this.splitContainer.SplitterDistance = 343;
+            this.splitContainer.SplitterWidth = 5;
             this.splitContainer.TabIndex = 0;
             // 
             // chatBox
             // 
             this.chatBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chatBox.Location = new System.Drawing.Point(0, 0);
+            this.chatBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chatBox.Name = "chatBox";
-            this.chatBox.Size = new System.Drawing.Size(594, 277);
+            this.chatBox.Size = new System.Drawing.Size(792, 343);
             this.chatBox.TabIndex = 0;
             this.chatBox.Text = "";
             // 
@@ -192,8 +208,9 @@
             // 
             this.typeMessageBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.typeMessageBox.Location = new System.Drawing.Point(0, 0);
+            this.typeMessageBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.typeMessageBox.Name = "typeMessageBox";
-            this.typeMessageBox.Size = new System.Drawing.Size(459, 54);
+            this.typeMessageBox.Size = new System.Drawing.Size(612, 67);
             this.typeMessageBox.TabIndex = 1;
             this.typeMessageBox.Text = "";
             this.typeMessageBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.typeMessageBox_KeyPress);
@@ -201,9 +218,10 @@
             // sendButton
             // 
             this.sendButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.sendButton.Location = new System.Drawing.Point(459, 0);
+            this.sendButton.Location = new System.Drawing.Point(612, 0);
+            this.sendButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.sendButton.Name = "sendButton";
-            this.sendButton.Size = new System.Drawing.Size(135, 54);
+            this.sendButton.Size = new System.Drawing.Size(180, 67);
             this.sendButton.TabIndex = 0;
             this.sendButton.Text = "Enviar";
             this.sendButton.UseVisualStyleBackColor = true;
@@ -216,16 +234,17 @@
             // 
             // ClientGUI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 400);
+            this.ClientSize = new System.Drawing.Size(1067, 492);
             this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.sidePanel);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ClientGUI";
-            this.Text = "Form1";
+            this.Text = "Cliente";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ClientGUI_FormClosing);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

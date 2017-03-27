@@ -19,6 +19,14 @@ namespace Server {
             InitializeComponent();
 
             this.handler = handler;
+
+            this.SetStyle(ControlStyles.DoubleBuffer, true);
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.SupportsTransparentBackColor, false);
+            this.SetStyle(ControlStyles.Opaque, false);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
         }
 
         private void UpdateUI() {
@@ -28,6 +36,10 @@ namespace Server {
             for (int i = 0; i < handler.ServerClientHandlers.Count; i++) {
                 ServerClientHandler clientHandler = handler.ServerClientHandlers[i];
                 ClientData client = clientHandler.RemoteClientData;
+
+                if (client == null) {
+                    continue;
+                }
                 
                 if (client.ID - 1 == clientList.Items.Count) {
                     clientList.Items.Add(new ListViewItem(new string[] {

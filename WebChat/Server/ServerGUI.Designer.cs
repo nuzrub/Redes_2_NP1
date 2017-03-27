@@ -29,23 +29,25 @@
             this.desconectarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.clientList = new System.Windows.Forms.ListView();
+            this.idHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.nomeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.statusHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ipHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.portaHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.kickButton = new System.Windows.Forms.Button();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
-            this.idHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.statusHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
             // 
+            this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.servidorToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(561, 24);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(748, 28);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -54,20 +56,22 @@
             this.servidorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.desconectarToolStripMenuItem});
             this.servidorToolStripMenuItem.Name = "servidorToolStripMenuItem";
-            this.servidorToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.servidorToolStripMenuItem.Size = new System.Drawing.Size(76, 24);
             this.servidorToolStripMenuItem.Text = "Servidor";
             // 
             // desconectarToolStripMenuItem
             // 
             this.desconectarToolStripMenuItem.Name = "desconectarToolStripMenuItem";
-            this.desconectarToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.desconectarToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
             this.desconectarToolStripMenuItem.Text = "Encerrar";
             // 
             // statusStrip
             // 
-            this.statusStrip.Location = new System.Drawing.Point(0, 294);
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip.Location = new System.Drawing.Point(0, 367);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(561, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
+            this.statusStrip.Size = new System.Drawing.Size(748, 22);
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -83,17 +87,27 @@
             this.clientList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clientList.FullRowSelect = true;
             this.clientList.GridLines = true;
-            this.clientList.Location = new System.Drawing.Point(0, 24);
+            this.clientList.Location = new System.Drawing.Point(0, 28);
+            this.clientList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.clientList.Name = "clientList";
-            this.clientList.Size = new System.Drawing.Size(561, 270);
+            this.clientList.Size = new System.Drawing.Size(748, 339);
             this.clientList.TabIndex = 3;
             this.clientList.UseCompatibleStateImageBehavior = false;
             this.clientList.View = System.Windows.Forms.View.Details;
+            // 
+            // idHeader
+            // 
+            this.idHeader.Text = "ID";
             // 
             // nomeHeader
             // 
             this.nomeHeader.Text = "Nome";
             this.nomeHeader.Width = 180;
+            // 
+            // statusHeader
+            // 
+            this.statusHeader.Text = "Status";
+            this.statusHeader.Width = 120;
             // 
             // ipHeader
             // 
@@ -108,9 +122,10 @@
             // kickButton
             // 
             this.kickButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.kickButton.Location = new System.Drawing.Point(0, 271);
+            this.kickButton.Location = new System.Drawing.Point(0, 339);
+            this.kickButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.kickButton.Name = "kickButton";
-            this.kickButton.Size = new System.Drawing.Size(561, 23);
+            this.kickButton.Size = new System.Drawing.Size(748, 28);
             this.kickButton.TabIndex = 4;
             this.kickButton.Text = "Kickar Selecionados";
             this.kickButton.UseVisualStyleBackColor = true;
@@ -121,27 +136,19 @@
             this.updateTimer.Enabled = true;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
-            // idHeader
-            // 
-            this.idHeader.Text = "ID";
-            // 
-            // statusHeader
-            // 
-            this.statusHeader.Text = "Status";
-            this.statusHeader.Width = 120;
-            // 
             // ServerGUI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(561, 316);
+            this.ClientSize = new System.Drawing.Size(748, 389);
             this.Controls.Add(this.kickButton);
             this.Controls.Add(this.clientList);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ServerGUI";
-            this.Text = "Form1";
+            this.Text = "Servidor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServerGUI_FormClosing);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

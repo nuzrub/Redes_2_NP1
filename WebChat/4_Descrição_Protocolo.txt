@@ -1,17 +1,17 @@
 
 
-
-Comandos da camada de aplicação pra fazer a coisa funcionar:
+A seguir, é apresentado o protocolo de comunicação e como ele é 
+traduzido de forma a ser enviado como binário
 
 Todo comando possui a seguinte estrutura:
 	Tipo + Paramêtros...
 
 E seguem as seguintes convenções
-	Cada tipo é identificado por um ID (byte).
-	Cada parâmetro é conhecido pelo protocolo baseado no tipo
+	Cada tipo de mensagem possui seu ID único
+	Ao ler o ID, é possível deduzir os parâmetros que seguem
 
-	Sizeof é a lenght de um array. Strings são tratadas como
-	arrays de chars
+	Sizeof é a lenght de um array. 
+	Strings são tratadas como arrays de chars
 
 
 
@@ -20,7 +20,6 @@ CONNECTION_REQUEST  Status Sizeof(Nome) NOME
 	Direção: Cliente -> Servidor
 CONNECTION_RESPONSE ID
 	Direção: Servidor -> Cliente
-
 
 // Informar da existencia de um outro Cliente
 NOTIFY_NEW_CLIENT ID Sizeof(Nome) NOME
@@ -58,7 +57,7 @@ Comandos:
 	KICK
 
 Formato binário:
-	Comandos são Ints
+	Os tipos de mensagem são Ints
 	IDs são Ints
 	Sizeofs retornam Ints
-	Mensagens como array de caracteres em UTF-8
+	Mensagens são arrays de caracteres em UTF-8

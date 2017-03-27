@@ -28,11 +28,35 @@ namespace Client {
                 }
             }
         }
+        private ClientStatus currentChatStatus {
+            get {
+                if (currentChatID == 0) {
+                    return ClientStatus.Online;
+                } else {
+                    return handler.OtherClients[currentChatID].Status;
+                }
+            }
+        }
+        private Color StatusToColor(ClientStatus status) {
+            switch (status) {
+                case ClientStatus.Online:
+                    return Color.LightGreen;
+                case ClientStatus.Busy:
+                    return Color.LightSalmon;
+                case ClientStatus.Away:
+                    return Color.OrangeRed;
+                case ClientStatus.Disconnected:
+                    return Color.LightGray;
+                default:
+                    throw new ArgumentException("Status Inválido");
+            }
+        }
 
         public ClientGUI(ClientHandler handler) {
             InitializeComponent();
 
             this.handler = handler;
+            this.Text = handler.Name + " (" + handler.Status + ")";
             this.indexIDMapping = new Dictionary<int, int>();
             this.IDIndexMapping = new Dictionary<int, int>();
             indexIDMapping.Add(0, 0);
@@ -40,6 +64,16 @@ namespace Client {
 
             contactsListbox.Items.Add("Global Chat");
             contactsListbox.SelectedIndex = 0;
+
+            chatBox.HideSelection = false;
+
+            this.SetStyle(ControlStyles.DoubleBuffer, true);
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.SupportsTransparentBackColor, false);
+            this.SetStyle(ControlStyles.Opaque, false);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
 
             UpdateUI();
         }
@@ -75,10 +109,17 @@ namespace Client {
         }
 
         private void UpdateChatBox() {
-            chatBox.Text = currentChatText;
+            this.SuspendLayout();
+            chatBox.Text = "";
+            chatBox.AppendText(currentChatText);
+            if (handler.Status == ClientStatus.Disconnected) {
+                chatBox.BackColor = Color.LightGray;
+            } else {
+                chatBox.BackColor = StatusToColor(currentChatStatus);
+            }
 
-            chatBox.SelectionStart = chatBox.Text.Length;
-            chatBox.ScrollToCaret();
+            
+            this.ResumeLayout();
         }
 
         private void sendButton_Click(object sender, EventArgs e) {
@@ -89,9 +130,6 @@ namespace Client {
                 message = message.Replace('\r', ' ');
                 handler.SendMessage(currentChatID, message);
                 typeMessageBox.Text = "";
-
-                chatBox.SelectionStart = chatBox.Text.Length;
-                chatBox.ScrollToCaret();
             }
         }
 
@@ -102,12 +140,15 @@ namespace Client {
         private void contactsListbox_SelectedIndexChanged(object sender, EventArgs e) {
             if (contactsListbox.SelectedIndex != -1) {
                 UpdateChatBox();
+                typeMessageBox.Select();
             }
         }
 
         private void ChangeStatus(ClientStatus newStatus) {
             handler.ChangeStatus(newStatus);
             statusLabel.Text = handler.Name + " (" + handler.Status + ")";
+            this.Text = statusLabel.Text;
+            typeMessageBox.Select();
         }
 
         private void disponívelToolStripMenuItem_Click(object sender, EventArgs e) {

@@ -1,20 +1,61 @@
 
 
 
-Em C#, o socket não me dá duas streams, você deve encapsulá-lo usando
-uma NetworkStream e BinaryWriter/Readers.
+A aplicação foi desenvolvida em C# utilizando a IDE Visual Studio 2015 Ultimate Edition
+A aplicação é dividida em três subprojetos:
+	Chat: DLL contendo toda a lógica da aplicação independente de interface gráfica
+	Client: EXE contendo o código da interface gráfica do cliente (utiliza Chat.dll)
+	Server: EXE contendo o código da interface gráfica do servidor (utiliza Chat.dll).
 
-Há uma implementação completamente Async de Sockets, que não requer
-a criação de uma thread explícita. Tal recurso pode ser acessado pelos
-métodos que começam em "Begin..." e "End...". No entanto, a sintáxe
-dessa abordagem é bem mais complicada e não oferece muitos ganhos
-para uma aplicação pequena.
-Nesta implementação, será utilizada a técnica de sockets asíncronos de
-forma manual, criando threads que rodam o socket síncrono.
 
-Afim de facilitar todo o resto da implementação, a complexidade de 
-gerência dos sockets deve ser encapsulada em uma interface de fácil
-uso e compreensão.
-Para tal, desenvolvemos o SocketHandler. Esta classe se responsabiliza
-por gerenciar a thread do socket, receber mensagens que devem ser 
-enviadas e notificar a aplicação de mensagens recebidas.
+Tanto em Client quanto em Server, o código referente à GUI utiliza as classes definidas em
+Chat.dll para realizar toda a comunicação e lógica da aplicação.
+
+Dentro de Chat.dll, os principais elementos são:
+	ClientStatus: enum com os possíveis estados de um cliente
+	ClientData: classe que guarda as informações básicas do cliente
+		Esta classe é utiliza no lado cliente e servidor
+	ClientHandler: classe derivada de ClientData. Contém toda a lógica do Cliente
+	
+	ServerHandler: classe responsável pela lógica do Servidor em si.
+	ServerClientHandler: classe responsável pela ponte Servidor-Cliente (do lado do servidor).
+		Há uma relação 1 para N entre ServerHandler e ServerClientHandler
+
+	SocketHelper: classe que encapsula o socket
+		Lida com o IO de Rede de forma mais amigável.
+		É capaz de ler todas as mensagens em buffer e colocá-las de maneira utilizável
+		em uma fila de "Mensagens para serem lidas".
+			Nessa classe que os dados binários são desserializados em forma de Mensagens.
+		É capaz de guardar mensagens para serem enviadas posteriormente.
+	Messages: namespace com as classes específicas para cada tipo de mensagem
+		Cada mensagem possui seu método Encode que recebe um BinaryWriter e 
+		se escreve na Stream de forma Binária.
+			BinaryWriter é um decorator sobre qualquer Stream
+			Na aplicação, é utilizado BinaryWriter sobre uma NetworkStream, que, por sua vez, 
+			é um decorator da classe Socket.
+
+
+Em linhas gerais, cada cliente possui sua própria Thread que é reponsável por
+atualizar a interface gráfica e atualizar o ClienteHandler
+	No total, cada cliente possui uma Thread, resultando em N threads.
+
+No lado do servidor, o servidor em si possui uma Thread, responsável pela sua
+interface gráfica e atualização, uma Thread para receber conexões TCP e N threads, 
+uma para cada Cliente, responsáveis por ler e enviar dados para eles.
+	No total, o servidor possui 2 + N threads (UI, Conexões e N Clientes).
+
+Toda a sincronização é feita a nível do SocketHelper, garantindo que o envio
+de mensagens para escrita e o recebimento de mensagens para leitura sejam síncronos.
+
+
+
+
+
+
+
+A interface gráfica do servidor possui o histórico de todos os clientes já conectados no sistema.
+Cada cliente, por sua vez, conhece apenas os clientes que estavam online quando ele entrou e
+os clientes que se conectaram após ele.
+
+O servidor não possui nenhum registro das mensagens que foram enviadas, ele apenas repassa.
+Cada cliente possui seu próprio histórico de todas as mensagens que ele já enviou e recebeu.
