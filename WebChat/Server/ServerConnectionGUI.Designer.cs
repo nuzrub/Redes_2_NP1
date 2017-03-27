@@ -58,7 +58,7 @@
             // logLabel
             // 
             this.logLabel.AutoSize = true;
-            this.logLabel.Location = new System.Drawing.Point(15, 86);
+            this.logLabel.Location = new System.Drawing.Point(12, 87);
             this.logLabel.Name = "logLabel";
             this.logLabel.Size = new System.Drawing.Size(28, 13);
             this.logLabel.TabIndex = 9;
@@ -66,7 +66,7 @@
             // 
             // connectButton
             // 
-            this.connectButton.Location = new System.Drawing.Point(12, 51);
+            this.connectButton.Location = new System.Drawing.Point(15, 52);
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(257, 32);
             this.connectButton.TabIndex = 8;
@@ -76,7 +76,7 @@
             // 
             // portBox
             // 
-            this.portBox.Location = new System.Drawing.Point(107, 25);
+            this.portBox.Location = new System.Drawing.Point(104, 26);
             this.portBox.Name = "portBox";
             this.portBox.Size = new System.Drawing.Size(165, 20);
             this.portBox.TabIndex = 7;
@@ -84,19 +84,19 @@
             // servidorPortaLabel
             // 
             this.servidorPortaLabel.AutoSize = true;
-            this.servidorPortaLabel.Location = new System.Drawing.Point(15, 28);
+            this.servidorPortaLabel.Location = new System.Drawing.Point(12, 29);
             this.servidorPortaLabel.Name = "servidorPortaLabel";
             this.servidorPortaLabel.Size = new System.Drawing.Size(89, 13);
             this.servidorPortaLabel.TabIndex = 3;
             this.servidorPortaLabel.Text = "Porta do Servidor";
             // 
-            // ConnectionGUI
+            // ServerConnectionGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 325);
             this.Controls.Add(this.groupBox1);
-            this.Name = "ConnectionGUI";
+            this.Name = "ServerConnectionGUI";
             this.Text = "Conectar";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

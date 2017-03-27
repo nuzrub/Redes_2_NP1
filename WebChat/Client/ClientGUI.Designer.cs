@@ -212,7 +212,6 @@
             // updateTimer
             // 
             this.updateTimer.Enabled = true;
-            this.updateTimer.Interval = 250;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
             // ClientGUI

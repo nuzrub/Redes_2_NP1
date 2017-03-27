@@ -4,6 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,7 +31,9 @@ namespace Chat {
             this.inboundMessages = new Queue<Message>();
         }
 
-
+        public IPEndPoint EndPoint() {
+            return (IPEndPoint)socket.LocalEndPoint;
+        }
         public void Update() {
             Message msg;
             lock(inboundMessages) {

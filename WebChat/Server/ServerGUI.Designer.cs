@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.servidorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.desconectarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -31,8 +32,10 @@
             this.nomeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ipHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.portaHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.salaHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.kickButton = new System.Windows.Forms.Button();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.idHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.statusHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,10 +75,11 @@
             // 
             this.clientList.CheckBoxes = true;
             this.clientList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.idHeader,
             this.nomeHeader,
+            this.statusHeader,
             this.ipHeader,
-            this.portaHeader,
-            this.salaHeader});
+            this.portaHeader});
             this.clientList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clientList.FullRowSelect = true;
             this.clientList.GridLines = true;
@@ -89,21 +93,17 @@
             // nomeHeader
             // 
             this.nomeHeader.Text = "Nome";
-            this.nomeHeader.Width = 158;
+            this.nomeHeader.Width = 180;
             // 
             // ipHeader
             // 
             this.ipHeader.Text = "IP";
-            this.ipHeader.Width = 97;
+            this.ipHeader.Width = 90;
             // 
             // portaHeader
             // 
             this.portaHeader.Text = "Porta";
-            // 
-            // salaHeader
-            // 
-            this.salaHeader.Text = "Sala";
-            this.salaHeader.Width = 235;
+            this.portaHeader.Width = 90;
             // 
             // kickButton
             // 
@@ -115,6 +115,20 @@
             this.kickButton.Text = "Kickar Selecionados";
             this.kickButton.UseVisualStyleBackColor = true;
             this.kickButton.Click += new System.EventHandler(this.kickButton_Click);
+            // 
+            // updateTimer
+            // 
+            this.updateTimer.Enabled = true;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            // 
+            // idHeader
+            // 
+            this.idHeader.Text = "ID";
+            // 
+            // statusHeader
+            // 
+            this.statusHeader.Text = "Status";
+            this.statusHeader.Width = 120;
             // 
             // ServerGUI
             // 
@@ -146,8 +160,10 @@
         private System.Windows.Forms.ColumnHeader nomeHeader;
         private System.Windows.Forms.ColumnHeader ipHeader;
         private System.Windows.Forms.ColumnHeader portaHeader;
-        private System.Windows.Forms.ColumnHeader salaHeader;
         private System.Windows.Forms.Button kickButton;
+        private System.Windows.Forms.Timer updateTimer;
+        private System.Windows.Forms.ColumnHeader idHeader;
+        private System.Windows.Forms.ColumnHeader statusHeader;
     }
 }
 

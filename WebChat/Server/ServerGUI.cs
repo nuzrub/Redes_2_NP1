@@ -13,22 +13,53 @@ using Chat;
 namespace Server {
     public partial class ServerGUI : Form {
         private ServerHandler handler;
-        private bool closeRequested;
 
 
         public ServerGUI(ServerHandler handler) {
             InitializeComponent();
 
             this.handler = handler;
-            this.closeRequested = false;
+        }
+
+        private void UpdateUI() {
+            for (int i = 0; i < clientList.Items.Count; i++) {
+                clientList.Items[i].SubItems[2].Text = ClientStatus.Disconnected.ToString();
+            }
+            for (int i = 0; i < handler.ServerClientHandlers.Count; i++) {
+                ServerClientHandler clientHandler = handler.ServerClientHandlers[i];
+                ClientData client = clientHandler.RemoteClientData;
+                
+                if (client.ID - 1 == clientList.Items.Count) {
+                    clientList.Items.Add(new ListViewItem(new string[] {
+                        client.ID.ToString(),
+                        client.Name,
+                        client.Status.ToString(),
+                        clientHandler.EndPoint().Address.ToString(),
+                        clientHandler.EndPoint().Port.ToString()
+                    }));
+                } else {
+                    clientList.Items[client.ID - 1].SubItems[2].Text = client.Status.ToString();
+                }
+            }
         }
 
         private void ServerGUI_FormClosing(object sender, FormClosingEventArgs e) {
-            closeRequested = true;
+            handler.Quit();
         }
 
         private void kickButton_Click(object sender, EventArgs e) {
+            foreach (ListViewItem item in clientList.Items) {
+                if (item.Checked) {
+                    int clientId = item.Index + 1;
+                    if (item.SubItems[2].Text != ClientStatus.Disconnected.ToString()) {
+                        handler.Kick(clientId);
+                    }
+                }
+            }
+        }
 
+        private void updateTimer_Tick(object sender, EventArgs e) {
+            UpdateUI();
         }
     }
 }

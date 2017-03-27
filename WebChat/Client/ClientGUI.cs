@@ -71,7 +71,7 @@ namespace Client {
             Application.DoEvents();
         }
         private void Disconnect() {
-            handler.Disconnect();
+            handler.AlertDisconnection();
         }
 
         private void UpdateChatBox() {
@@ -100,7 +100,9 @@ namespace Client {
         }
 
         private void contactsListbox_SelectedIndexChanged(object sender, EventArgs e) {
-            UpdateChatBox();
+            if (contactsListbox.SelectedIndex != -1) {
+                UpdateChatBox();
+            }
         }
 
         private void ChangeStatus(ClientStatus newStatus) {

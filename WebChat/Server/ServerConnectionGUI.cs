@@ -13,10 +13,10 @@ using Chat;
 
 namespace Server {
     public partial class ServerConnectionGUI: Form {
-        public ServerConnectionGUI() {
+        public ServerConnectionGUI(string porta) {
             InitializeComponent();
             
-            portBox.Text = "7070";
+            portBox.Text = porta;
         }
 
         private void Log(string message) {
@@ -41,7 +41,7 @@ namespace Server {
             Log("Os valores de entrada foram lidos com sucesso.");
             #endregion
 
-            ServerHandler handler = ServerHandler.Connect(porta);
+            ServerHandler handler = ServerHandler.Connect(IPAddress.Loopback, porta);
             if (handler != null) {
                 Log("Server inicializado na porta " + portBox.Text + ".");
 

@@ -4,6 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,6 +35,9 @@ namespace Chat {
             thread.Start();
         }
 
+        public IPEndPoint EndPoint() {
+            return link.EndPoint();
+        }
         public void NotifyDisconnection() {
             lock (disconnectMutex) {
                 disconnectRequested = true;
@@ -83,16 +87,16 @@ namespace Chat {
                                     break;
                                 case MessageType.ChangeStatus:
                                     ChangeStatus cs = (ChangeStatus)msg;
+                                    RemoteClientData.Status = cs.NewStatus;
                                     parent.BroadcastChangeStatus(cs);
                                     break;
+
                                 case MessageType.Disconnect:
                                     Disconnect d = (Disconnect)msg;
                                     parent.HandleDisconnectRequest(d, this);
-                                    break;
-                                case MessageType.Kick:
-                                    Kick k = (Kick)msg;
-                                    parent.BroadcastKick(k);
-                                    break;
+                                    RemoteClientData.Status = ClientStatus.Disconnected;
+                                    NotifyDisconnection();
+                                    return; // <<<<<<<<<<<<<<<<<<<<<<< Return não Break
                                 default:
                                     throw new ArgumentException("O server não deveria estar recebendo esse tipo de mensagem: " + msg.MsgType);
                             }

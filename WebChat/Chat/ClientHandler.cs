@@ -34,10 +34,12 @@ namespace Chat {
 
         public void SendMessage(int destinationID, string message) {
             if (!disconnected) {
-                SendMessage sm = new SendMessage(ID, destinationID, message);
-                serverLink.EnqueueForSending(sm);
+                if (destinationID == 0 || OtherClients[destinationID].Status != ClientStatus.Disconnected) {
+                    SendMessage sm = new SendMessage(ID, destinationID, message);
+                    serverLink.EnqueueForSending(sm);
 
-                ReceiveMessage(sm);
+                    ReceiveMessage(sm);
+                }
             }
         }
         private void ReceiveMessage(SendMessage sm) {
@@ -62,6 +64,9 @@ namespace Chat {
             }
         }
         public void ChangeStatus(ClientStatus newStatus) {
+            // Para disconectar, usa-se o Disconnect e Kick, não changeStatus;
+            Debug.Assert(newStatus != ClientStatus.Disconnected);
+
             if (!disconnected) {
                 ChangeStatus cs = new ChangeStatus(ID, newStatus);
                 serverLink.EnqueueForSending(cs);
@@ -73,21 +78,27 @@ namespace Chat {
                 GlobalChat.AppendLine("[Sistema:] Você mudou seu estado para: " + newStatus);
             }
         }
-        public void Disconnect() {
+        public void AlertDisconnection() {
             if (!disconnected) {
                 // Falar com o server primeiro.
                 Disconnect d = new Disconnect(ID);
                 serverLink.EnqueueForSending(d);
 
-                foreach (var key in PrivateChats.Keys) {
-                    PrivateChats[key].AppendLine("[Sistema:] Você se desconectou do sistema");
-                }
-                GlobalChat.AppendLine("[Sistema:] Você se desconectou do sistema");
-
-                disconnected = true;
+                Disconnect();
             }
         }
+        public void Disconnect() {
+            foreach (var key in PrivateChats.Keys) {
+                PrivateChats[key].AppendLine("[Sistema:] Você se desconectou do sistema");
+            }
+            GlobalChat.AppendLine("[Sistema:] Você se desconectou do sistema");
+
+            this.Status = ClientStatus.Disconnected;
+            disconnected = true;
+        }
         public void TurnOff() {
+            // o sistema tem de garantir que a aplicação vai disconectar antes de desligar
+            Debug.Assert(disconnected);
             serverLink.Dispose();
         }
 
@@ -113,7 +124,7 @@ namespace Chat {
                             NotifyNewClient nnc = (NotifyNewClient)msg;
                             ClientData newClient = new ClientData(nnc.ClientName, nnc.NewClientID, nnc.NewClientStatus);
                             OtherClients.Add(newClient.ID, newClient);
-                            PrivateChats.Add(newClient.ID, new StringBuilder("[Sistema:] Essa é uma conversa privada entre você e " + nnc.ClientName));
+                            PrivateChats.Add(newClient.ID, new StringBuilder("[Sistema:] Essa é uma conversa privada entre você e " + nnc.ClientName + ".\n"));
                             GlobalChat.AppendLine("[Sistema:] " + nnc.ClientName + " se conectou no chat global.");
                             RecentlyConnectedClients.Add(newClient);
                             break;
@@ -129,9 +140,13 @@ namespace Chat {
                             break;
                         case MessageType.Kick:
                             Kick k = (Kick)msg;
-                            OtherClients[k.Who].Status = ClientStatus.Disconnected;
-                            PrivateChats[k.Who].AppendLine("[Sistema:] " + OtherClients[k.Who].Name + " se desconectou.");
-                            GlobalChat.AppendLine("[Sistema:] " + OtherClients[k.Who].Name + " se desconectou.");
+                            if (k.Who == this.ID) {
+                                Disconnect();
+                            } else {
+                                OtherClients[k.Who].Status = ClientStatus.Disconnected;
+                                PrivateChats[k.Who].AppendLine("[Sistema:] " + OtherClients[k.Who].Name + " se desconectou.");
+                                GlobalChat.AppendLine("[Sistema:] " + OtherClients[k.Who].Name + " se desconectou.");
+                            }
                             break;
                         default:
                             throw new ArgumentException("O cliente não deveria estar recebendo esse tipo de mensagem: " + msg.MsgType);

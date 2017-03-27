@@ -15,11 +15,11 @@ using Chat.Messages;
 
 namespace Client {
     public partial class ConnectionGUI : Form {
-        public ConnectionGUI() {
+        public ConnectionGUI(string name, int status, string ip, string port) {
             InitializeComponent();
 
-            nameBox.Text = "Cliente";
-            statusBox.SelectedIndex = 1;
+            nameBox.Text = name;
+            statusBox.SelectedIndex = status;
             ipBox.Text = "127.0.0.1";
             portBox.Text = "7070";
         }

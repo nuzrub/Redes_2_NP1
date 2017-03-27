@@ -11,9 +11,9 @@ using Chat.Messages;
 
 namespace Chat {
     public class ServerHandler {
+        public List<ServerClientHandler> ServerClientHandlers { get; private set; }
         private Thread connectionListenerThread;
-        private Socket connectionListener;
-        private List<ServerClientHandler> serverClientHandlers;
+        private TcpListener connectionListener;
         
         private object disconnectMutex;
         private bool disconnectRequested;
@@ -21,16 +21,17 @@ namespace Chat {
         private object globalIdMutex;
         private int nextGlobalID;
 
-        public ServerHandler(Socket connectionListener) {
+        public ServerHandler(TcpListener connectionListener) {
             this.connectionListener = connectionListener;
-            this.serverClientHandlers = new List<ServerClientHandler>();
+            this.ServerClientHandlers = new List<ServerClientHandler>();
             
             this.disconnectMutex = new object();
             this.disconnectRequested = false;
             this.globalIdMutex = new object();
             this.nextGlobalID = 1;
 
-            StartListenerThread();
+            connectionListenerThread = new Thread(ConnectionListenerTask);
+            connectionListenerThread.Start();
         }
 
         public int RequestNewID() {
@@ -47,13 +48,13 @@ namespace Chat {
             NotifyNewClient nnc = new NotifyNewClient(nc.ID, nc.Status, nc.Name);
 
             // Avisar os outros do cara novo
-            foreach (var handler in serverClientHandlers) {
+            foreach (var handler in ServerClientHandlers) {
                 if (handler != newClientHandler) {
                     handler.ForwardMessage(nnc);
                 }
             }
             // Avisar o cara novo dos outros
-            foreach (var handler in serverClientHandlers) {
+            foreach (var handler in ServerClientHandlers) {
                 if (handler != newClientHandler) {
                     nc = handler.RemoteClientData;
                     nnc = new NotifyNewClient(nc.ID, nc.Status, nc.Name);
@@ -63,13 +64,13 @@ namespace Chat {
         }
         public void BroadcastSendMessage(SendMessage sm) {
             if (sm.To_ == 0) {
-                foreach (var handler in serverClientHandlers) {
+                foreach (var handler in ServerClientHandlers) {
                     if (handler.RemoteClientData.ID != sm.From_) {
                         handler.ForwardMessage(sm);
                     }
                 }
             } else {
-                foreach (var handler in serverClientHandlers) {
+                foreach (var handler in ServerClientHandlers) {
                     if (handler.RemoteClientData.ID != sm.From_) {
                         if (handler.RemoteClientData.ID == sm.To_) {
                             handler.ForwardMessage(sm);
@@ -80,7 +81,7 @@ namespace Chat {
             }
         }
         public void BroadcastChangeStatus(ChangeStatus cs) {
-            foreach (var handler in serverClientHandlers) {
+            foreach (var handler in ServerClientHandlers) {
                 if (handler.RemoteClientData.ID != cs.Who) {
                     handler.ForwardMessage(cs);
                 }
@@ -93,7 +94,7 @@ namespace Chat {
         }
         public void BroadcastKick(Kick k) {
             ServerClientHandler targetHandler = null;
-            foreach (var handler in serverClientHandlers) {
+            foreach (var handler in ServerClientHandlers) {
                 if (handler.RemoteClientData.ID == k.Who) {
                     targetHandler = handler;
                 } else {
@@ -101,50 +102,74 @@ namespace Chat {
                 }
             }
             Debug.Assert(targetHandler != null);
-            serverClientHandlers.Remove(targetHandler);
+            ServerClientHandlers.Remove(targetHandler);
+        }
+        public void Kick(int ID) {
+            Kick k = new Kick(ID);
+
+            ServerClientHandler targetHandler = null;
+            foreach (var handler in ServerClientHandlers) {
+                if (handler.RemoteClientData.ID == ID) {
+                    targetHandler = handler;
+                } else {
+                    handler.ForwardMessage(k);
+                }
+            }
+            Debug.Assert(targetHandler != null);
+            targetHandler.ForwardMessage(k);
+
+            ServerClientHandlers.Remove(targetHandler);
         }
 
+        public void Quit() {
+            foreach (var handler in ServerClientHandlers) {
+                Kick k = new Kick(handler.RemoteClientData.ID);
+                handler.ForwardMessage(k);
+            }
+            lock (disconnectMutex) {
+                disconnectRequested = true;
+            }
+            // ter certeza q todos os quits foram enviados.
+            Thread.Sleep(200);
 
-        private void StartListenerThread() {
-            connectionListenerThread = new Thread(ConnectionListenerTask);
-            connectionListenerThread.Start();
+            foreach (var handler in ServerClientHandlers) {
+                handler.NotifyDisconnection();
+            }
+            ServerClientHandlers.Clear();
         }
+
+        
 
         private void ConnectionListenerTask() {
+            connectionListener.Start();
+
+            Console.WriteLine("Esperando conexões...");
             while (true) {
                 lock (disconnectMutex) {
                     if (disconnectRequested) {
                         break;
                     }
                 }
-                Console.WriteLine("Waiting for a connection...");
+                if (connectionListener.Pending()) {
+                    Socket clientLink = connectionListener.AcceptSocket();
 
-                Socket clientLink = connectionListener.Accept();
-                serverClientHandlers.Add(new ServerClientHandler(this, clientLink));
-                Console.WriteLine("Cliente conectado");
-
+                    ServerClientHandlers.Add(new ServerClientHandler(this, clientLink));
+                    Console.WriteLine("Cliente conectado.");
+                    Console.WriteLine("Esperando conexões...");
+                }
                 // dá a vez
                 Thread.Yield();
             }
 
-            foreach (var sch in serverClientHandlers) {
-                sch.NotifyDisconnection();
-            }
+            connectionListener.Stop();
+            Console.WriteLine("Conexão fechada\n\n\n");
         }
 
-        public static ServerHandler Connect(int porta) {
-            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Loopback, porta);
-
-            var connectionListener = new Socket(
-                AddressFamily.InterNetwork,
-                SocketType.Stream,
-                ProtocolType.Tcp);
+        public static ServerHandler Connect(IPAddress ip, int porta) {
+            var connectionListener = new TcpListener(ip, porta);
 
 
             try {
-                connectionListener.Bind(localEndPoint);
-                connectionListener.Listen(10);
-
                 return new ServerHandler(connectionListener);
             } catch (Exception e) {
                 Console.WriteLine(e.ToString());
