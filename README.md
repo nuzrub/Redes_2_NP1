@@ -3,14 +3,15 @@ Projeto de um Chat via Sockets para a disciplina de Redes de Computadores 2
 
 Aluno(s): Ygor Rebouças
 Linguage: C#
-Repositório: N/A
+Repositório: https://github.com/nuzrub/Redes_2_NP1
+Funcionalidades: Básico + GUI Cliente + GUI Servidor + Protocolo Binário + Sistema de Status
+
+
 Intruções para Compilação:
-	No repositório, na seção de downloads, há as versões compiladas da aplicação
-	cliente e da aplicação servidora.
+	O repositório contém todo o código e dependências.
+	Ele pode ser aberto e compilado utilizando o Visual Studio 2015. Versões anteriores 
+	também devem funcionar sem nenhum problema.
+	Eu forcei o commit das pastas Bin/Debug e Bin/Release. Nelas, versões precompiladas estão presentes.
 	
-	Para compilar e executar o código manualmente, basta abrir o arquivo de solução
-	do visual studio (.sln) e compilar o código. Para executá-los, você deve executá-las
-	pelo explorador de arquivos ou pela função "Run Without Debugging" do Visual Studio.
-		A versão do Run que é sem o Debugging permite startar a aplicação sem bloquear
-		o visual studio (que entraria em modo debug).
+	Na Pasta WebChat, há diversos arquivos .txt explicando o sistema, o protocolo e a implementação.
 
