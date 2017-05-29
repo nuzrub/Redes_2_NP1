@@ -1,0 +1,46 @@
+
+
+Na aplicação desenvolvida, para a NP2, foi adicionada a criptografia RSA à solução.
+
+Afim de modificar o código de forma mínima, o RSA foi implantado diretamente na classe wrarper do 
+socket e a criação de chaves nas classes dedicadas ao servidor e aos clientes.
+
+Na solução, chaves de 203 bytes foram utilizadas. Este tamanho de chave, utilizando Optimal Asymmetric 
+Encryption Padding (OAEP), permite o envio de 160 caractéres. Ao considerar que cada mensagem possui 
+16 bytes de cabeçalho, é possível enviar um total de 144 caracteres por mensagem. O equivalente à um
+tweet.
+
+No sistema, as únicas mensagens não criptografadas são as de pedido de conexão.
+
+Para evitar a "confusão" entre as mensagens, cada mensagem é enviada com um meta-header que contém
+o seu tamanho (entre 0 e 256, visto que nenhuma mensagem é capaz de ser maior que isso).
+
+
+Portanto, o processo inteiro de envio e recebimento RSA consiste em (código em Socket Helper):
+	Preparar a mensagem original, sem criptografia.
+	Encriptar a mensagem
+	Enviar o byte com o tamanho da mensagem encriptada
+	Enviar a mensagem encriptada
+	Flush.
+
+	Receber o tamanho da mensagem
+	Ler até que a mensagem inteira seja lida
+	Decriptar a mensagem
+	Entregar a mensagem decriptada para o sistema
+
+
+
+
+Quanto à criação das chaves, isto é feito pelo servidor e por cada cliente.
+	Ao requisitar uma conexão, o cliente já envia sua chave pública (código em ClientHandler).
+	Ao receber um pedido de conexão, o servidor responde com sua chave pública (código em ServerClientHandler).
+	Deste ponto em diante, todas as mensagens são criptografadas.
+
+
+
+Portanto, as modificações do sistema são limitadas à apenas 4 classes:
+	ServerHandler, que cria a chave do servidor
+	ServerClientHandler, que recebe a chave do cliente e envia a chave pública do servidor
+	ClientHandler, que cria as chaves do cliente e envia a chave pública
+	SocketHelper, que encapsula toda a encriptação e decriptação de mensagens.
+	
