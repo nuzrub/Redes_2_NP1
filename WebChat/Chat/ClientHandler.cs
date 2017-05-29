@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using Chat.Messages;
 
 
@@ -168,14 +169,22 @@ namespace Chat {
                 try {
                     serverRawLink.Connect(remoteEP);
                     SocketHelper serverLink = new SocketHelper(serverRawLink);
+                    RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(203 * 8);
+                    
+                    
+                    RSAParameters clientKeys = rsa.ExportParameters(true); // true = exportar public E private key
 
-                    ConnectionRequest creq = new ConnectionRequest(status, name);
+                    // manda o modulus e expoent, q é a public key.
+                    ConnectionRequest creq = new ConnectionRequest(status, name, clientKeys.Modulus, clientKeys.Exponent);
                     serverLink.EnqueueForSending(creq);
+                    serverLink.Update();
                     Console.WriteLine("Connection Request sent by Client");
 
+                    // Liga o RSA no lado cliente já pra receber encriptado, mas sem chaves válidas pra envio.
+                    //serverLink.SetKeys(clientKeys, new RSAParameters());
                     while (true) {
                         serverLink.Update();
-                        Messages.Message msg = serverLink.DequeueReceivedMessage();
+                        Message msg = serverLink.DequeueReceivedMessage();
                         if (msg != null) {
                             if (msg.MsgType != MessageType.ConnectionResponse) {
                                 serverLink.RequeueReceivedMessage(msg);
@@ -184,6 +193,13 @@ namespace Chat {
                                 ConnectionResponse crep = (ConnectionResponse)msg;
                                 Console.WriteLine("Connection Response Received at Client");
 
+                                // recebe a public key (modulus + expoent) do server
+                                RSAParameters serverKeys = new RSAParameters();
+                                serverKeys.Modulus = crep.PublicKey;
+                                serverKeys.Exponent = crep.Expoent;
+
+                                // liga o RSA no link, tanto pra recebimento quanto envio.
+                                serverLink.SetKeys(clientKeys, serverKeys);
                                 return new ClientHandler(name, crep.ClientID, status, serverLink);
                             }
                         }

@@ -12,10 +12,14 @@ namespace Chat.Messages {
     public class ConnectionRequest : Message {
         public ClientStatus InitialStatus { get; private set; }
         public string ClientName { get; private set; }
+        public byte[] PublicKey { get; private set; }
+        public byte[] Expoent { get; private set; }
 
-        public ConnectionRequest(ClientStatus initialStatus, string clientName) : base(MessageType.ConnectionRequest) {
+        public ConnectionRequest(ClientStatus initialStatus, string clientName, byte[] pk, byte[] e) : base(MessageType.ConnectionRequest) {
             this.InitialStatus = initialStatus;
             this.ClientName = clientName;
+            this.PublicKey = pk;
+            this.Expoent = e;
         }
 
         public override void Encode(BinaryWriter bw) {
@@ -26,6 +30,11 @@ namespace Chat.Messages {
             byte[] nameData = Encoding.UTF8.GetBytes(ClientName);
             bw.Write(nameData.Length);
             bw.Write(nameData);
+
+            bw.Write(PublicKey.Length);
+            bw.Write(PublicKey);
+            bw.Write(Expoent.Length);
+            bw.Write(Expoent);
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using Chat.Messages;
 
 
@@ -14,6 +15,7 @@ namespace Chat {
         public List<ServerClientHandler> ServerClientHandlers { get; private set; }
         private Thread connectionListenerThread;
         private TcpListener connectionListener;
+        private RSACryptoServiceProvider rsa;
         
         private object disconnectMutex;
         private bool disconnectRequested;
@@ -29,6 +31,8 @@ namespace Chat {
             this.disconnectRequested = false;
             this.globalIdMutex = new object();
             this.nextGlobalID = 1;
+
+            this.rsa = new RSACryptoServiceProvider(203 * 8);
 
             connectionListenerThread = new Thread(ConnectionListenerTask);
             connectionListenerThread.Start();
@@ -153,7 +157,7 @@ namespace Chat {
                 if (connectionListener.Pending()) {
                     Socket clientLink = connectionListener.AcceptSocket();
 
-                    ServerClientHandlers.Add(new ServerClientHandler(this, clientLink));
+                    ServerClientHandlers.Add(new ServerClientHandler(this, rsa, clientLink));
                     Console.WriteLine("Cliente conectado.");
                     Console.WriteLine("Esperando conexões...");
                 }
@@ -167,8 +171,7 @@ namespace Chat {
 
         public static ServerHandler Connect(IPAddress ip, int porta) {
             var connectionListener = new TcpListener(ip, porta);
-
-
+            
             try {
                 return new ServerHandler(connectionListener);
             } catch (Exception e) {

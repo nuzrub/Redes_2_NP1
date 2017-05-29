@@ -1,10 +1,12 @@
 Projeto de um Chat via Sockets para a disciplina de Redes de Computadores 2
+Nesta versão, há a adição da criptografia RSA para o envio e recebimento de dados.
 
 
-Aluno(s): Ygor Rebouças
+Aluno(s): Ygor Rebouças e Gabriel Maia
 Linguage: C#
 Repositório: https://github.com/nuzrub/Redes_2_NP1
 Funcionalidades: Básico + GUI Cliente + GUI Servidor + Protocolo Binário + Sistema de Status
+				 RSA para envio e recebimento criptografados
 
 
 Intruções para Compilação:

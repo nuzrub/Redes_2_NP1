@@ -74,6 +74,7 @@ namespace Client {
             this.SetStyle(ControlStyles.Opaque, false);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             this.SetStyle(ControlStyles.ResizeRedraw, true);
+            limiteLabel.Text = "";
 
             UpdateUI();
         }
@@ -128,8 +129,13 @@ namespace Client {
             if (message != "") {
                 message = message.Replace('\n', ' ');
                 message = message.Replace('\r', ' ');
-                handler.SendMessage(currentChatID, message);
-                typeMessageBox.Text = "";
+                if (message.Length < 144) {
+                    handler.SendMessage(currentChatID, message);
+                    typeMessageBox.Text = "";
+                    limiteLabel.Text = "";
+                } else {
+                    limiteLabel.Text = "Mensagens são limitadas para 144 caracteres!";
+                }
             }
         }
 

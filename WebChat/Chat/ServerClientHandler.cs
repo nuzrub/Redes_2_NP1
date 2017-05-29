@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Chat.Messages;
@@ -16,14 +17,15 @@ namespace Chat {
         public ClientData RemoteClientData { get; private set; }
         private Thread thread;
         private SocketHelper link;
-        
+        private RSACryptoServiceProvider rsa;
         private ServerHandler parent;
 
         private object disconnectMutex;
         private bool disconnectRequested;
 
-        public ServerClientHandler(ServerHandler parent, Socket rawLink) {
+        public ServerClientHandler(ServerHandler parent, RSACryptoServiceProvider rsa, Socket rawLink) {
             this.parent = parent;
+            this.rsa = rsa;
             this.link = new SocketHelper(rawLink);
             this.thread = new Thread(() => {
                 ClientLinkTask();
@@ -66,15 +68,22 @@ namespace Chat {
                         } else {
                             if (waitingForConnectionRequest) {
                                 Debug.Assert(msg.MsgType == MessageType.ConnectionRequest);
-
+                                
                                 ConnectionRequest creq = (ConnectionRequest)msg;
+                                RSAParameters serverKeys = rsa.ExportParameters(true); // true = expotar public E private keys
+                                RSAParameters clientKeys = new RSAParameters();
+                                clientKeys.Modulus = creq.PublicKey;
+                                clientKeys.Exponent = creq.Expoent;
+                                
                                 int id = parent.RequestNewID();
-
                                 RemoteClientData = new ClientData(creq.ClientName, id, creq.InitialStatus);
-
-                                ConnectionResponse crep = new ConnectionResponse(id);
+                                
+                                ConnectionResponse crep = new ConnectionResponse(id, serverKeys.Modulus, serverKeys.Exponent);
                                 link.EnqueueForSending(crep);
                                 link.Update();
+
+                                link.SetKeys(serverKeys, clientKeys);
+                                Thread.Sleep(100);
 
                                 waitingForConnectionRequest = false;
                                 parent.BroadcastNewClient(this);
